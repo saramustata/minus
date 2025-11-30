@@ -1,0 +1,74 @@
+---
+
+---
+
+<nav class="navbar">
+    <div class="navbar-left">
+        <img src="/src/assets/logo.svg" alt="Logo" class="logo" />
+    </div>
+    <div class="navbar-center">
+        <a href="/news" class="navbar-item">News</a>
+        <a href="/metrics" class="navbar-item">Metrics</a>
+        <a href="/how-to" class="navbar-item">How-to</a>
+        <a href="/contact" class="navbar-item">Team</a>
+    </div>
+    <div class="navbar-right">
+        <a href="/contact" class="button-right">
+            Contact Us
+            <img
+                src="/src/assets/diagonalArrow.svg"
+                alt="Arrow"
+                class="contact-arrow"
+            />
+        </a>
+    </div>
+</nav>
+
+<style>
+    .navbar {
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .navbar-center {
+        display: flex;
+        gap: 27px;
+    }
+
+    .navbar-item {
+        text-decoration: none;
+        color: var(--text-headline);
+        font-weight: bold;
+        font-size: var(--font-size-subheading);
+        transition: color 0.2s;
+    }
+
+    .navbar-item:hover {
+        color: var(--accent6);
+    }
+
+    .button-right {
+        display: flex;
+        align-items: center;
+        padding: 14px 14px;
+        background-color: var(--accent1);
+        color: var(--text-on-accent);
+        text-decoration: none;
+        border-radius: 1000px;
+        transition: background-color 0.2s;
+    }
+    .button-right:hover {
+        background-color: var(--accent3);
+    }
+
+    .contact-arrow {
+        height: 9px;
+        padding: 10px;
+    }
+
+    .logo {
+        height: 65px;
+    }
+</style>

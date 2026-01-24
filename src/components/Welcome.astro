@@ -3,10 +3,13 @@
 ---
 
 <div class="welcome">
-	<div class="moto">More with less...</div>
+	<h1 class="moto">More with<br />less...</h1>
+
 	<div class="geometry-container">
-		<img src="src/assets/Ipad.png" alt="Stats" class="landing-stats" />
-		<div class="geometry-shape"></div>
+		<div class="image-wrapper">
+			<img src="/src/assets/Ipad.png" alt="Stats" class="landing-stats" />
+			<div class="geometry-shape"></div>
+		</div>
 	</div>
 </div>
 
@@ -16,7 +19,7 @@
 		flex-direction: column;
 		justify-content: center;
 		margin-top: 40px;
-		padding: 20px 40px;
+		padding: 0 var(--page-padding); /* Matches navbar padding */
 	}
 
 	.moto {
@@ -25,6 +28,8 @@
 		font-size: var(--font-size-landing);
 		color: var(--text-headline);
 		margin-bottom: 50px;
+		line-height: 1.1; /* Tighter line height for large text */
+		margin-top: 0;
 	}
 
 	.geometry-container {
@@ -32,22 +37,49 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin-top: 40px;
+		margin-top: 20px;
+		width: 100%;
+	}
+
+	.image-wrapper {
+		position: relative;
+		width: 100%;
+		max-width: 1200px; /* Max width for huge screens */
+		display: flex;
+		justify-content: center;
 	}
 
 	.landing-stats {
-		width: 70%;
+		width: 80%; /* Takes up most of the wrapper */
 		z-index: 2;
+		height: auto;
+		display: block;
 	}
 
 	.geometry-shape {
 		position: absolute;
-		bottom: 0;
-		right: 0;
-		width: 100%;
-		height: 70%;
+		bottom: 15%; /* Adjusted to align with the bottom part of iPad */
+		right: 5%;
+		left: 5%;
+		height: 60%;
 		border-radius: 30px;
 		background-color: var(--accent3);
 		z-index: 1;
+	}
+
+	/* Mobile Adjustments */
+	@media (max-width: 768px) {
+		.moto {
+			margin-bottom: 30px;
+		}
+		.landing-stats {
+			width: 100%; /* Full width on mobile */
+		}
+		.geometry-shape {
+			width: 100%;
+			left: 0;
+			right: 0;
+			border-radius: 20px;
+		}
 	}
 </style>

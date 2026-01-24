@@ -6,13 +6,15 @@
     <div class="navbar-left">
         <img src="/src/assets/logo.svg" alt="Logo" class="logo" />
     </div>
-    <div class="navbar-center">
+
+    <div class="navbar-center desktop-only">
         <a href="/news" class="navbar-item">News</a>
         <a href="/metrics" class="navbar-item">Metrics</a>
         <a href="/how-to" class="navbar-item">How-to</a>
         <a href="/contact" class="navbar-item">Team</a>
     </div>
-    <div class="navbar-right">
+
+    <div class="navbar-right desktop-only">
         <a href="/contact" class="button-right">
             Contact Us
             <img
@@ -22,11 +24,28 @@
             />
         </a>
     </div>
+
+    <div class="mobile-menu-icon">
+        <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </div>
 </nav>
 
 <style>
     .navbar {
-        padding: 20px 40px;
+        padding: 20px var(--page-padding); /* Uses responsive variable */
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -41,7 +60,7 @@
         text-decoration: none;
         color: var(--text-headline);
         font-family: font2;
-        font-size: var(--font-size-subheading);
+        font-size: var(--font-size-button); /* Scaled down slightly */
         transition: color 0.2s;
     }
 
@@ -52,24 +71,42 @@
     .button-right {
         display: flex;
         align-items: center;
-        padding: 14px 14px;
+        padding: 10px 20px;
         background-color: var(--accent1);
         color: var(--text-on-accent);
         font-family: font2;
         text-decoration: none;
         border-radius: 1000px;
         transition: background-color 0.2s;
+        font-size: var(--font-size-button);
+        white-space: nowrap;
     }
+
     .button-right:hover {
         background-color: var(--accent3);
     }
 
     .contact-arrow {
         height: 9px;
-        padding: 10px;
+        margin-left: 8px;
     }
 
     .logo {
-        height: 65px;
+        height: 40px; /* Adjusted to match standard sizing */
+    }
+
+    /* Mobile Menu Toggle Logic */
+    .mobile-menu-icon {
+        display: none; /* Hidden by default */
+        cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+        .desktop-only {
+            display: none; /* Hide links on mobile */
+        }
+        .mobile-menu-icon {
+            display: block; /* Show hamburger on mobile */
+        }
     }
 </style>

@@ -3,11 +3,22 @@
 ---
 
 <div class="welcome">
-	<h1 class="moto">More with<br />less...</h1>
+	<h1 class="moto">More with less...</h1>
 
 	<div class="geometry-container">
 		<div class="image-wrapper">
-			<img src="/src/assets/Ipad.png" alt="Stats" class="landing-stats" />
+			<img
+				src="/src/assets/Ipad.png"
+				alt="Dashboard on iPad"
+				class="landing-stats desktop-img"
+			/>
+
+			<img
+				src="/src/assets/Iphone.png"
+				alt="Dashboard on iPhone"
+				class="landing-stats mobile-img"
+			/>
+
 			<div class="geometry-shape"></div>
 		</div>
 	</div>
@@ -19,7 +30,7 @@
 		flex-direction: column;
 		justify-content: center;
 		margin-top: 40px;
-		padding: 0 var(--page-padding); /* Matches navbar padding */
+		padding: 0 var(--page-padding);
 	}
 
 	.moto {
@@ -28,7 +39,7 @@
 		font-size: var(--font-size-landing);
 		color: var(--text-headline);
 		margin-bottom: 50px;
-		line-height: 1.1; /* Tighter line height for large text */
+		line-height: 1.1;
 		margin-top: 0;
 	}
 
@@ -44,21 +55,32 @@
 	.image-wrapper {
 		position: relative;
 		width: 100%;
-		max-width: 1200px; /* Max width for huge screens */
+		max-width: 1200px;
 		display: flex;
 		justify-content: center;
 	}
 
 	.landing-stats {
-		width: 80%; /* Takes up most of the wrapper */
 		z-index: 2;
 		height: auto;
 		display: block;
 	}
 
+	/* Default (Desktop/Tablet) Styles */
+	.desktop-img {
+		width: 80%;
+		display: block; /* Visible */
+	}
+
+	.mobile-img {
+		display: none; /* Hidden */
+		width: 100%;
+		max-width: 400px; /* Constrain phone width so it doesn't look huge */
+	}
+
 	.geometry-shape {
 		position: absolute;
-		bottom: 15%; /* Adjusted to align with the bottom part of iPad */
+		bottom: 0;
 		right: 5%;
 		left: 5%;
 		height: 60%;
@@ -67,18 +89,29 @@
 		z-index: 1;
 	}
 
-	/* Mobile Adjustments */
-	@media (max-width: 768px) {
+	/* --- Mobile Switching Logic --- */
+	@media (max-width: 650px) {
 		.moto {
 			margin-bottom: 30px;
 		}
-		.landing-stats {
-			width: 100%; /* Full width on mobile */
+
+		/* Hide iPad */
+		.desktop-img {
+			display: none;
 		}
+
+		/* Show iPhone */
+		.mobile-img {
+			display: block;
+		}
+
+		/* Adjust geometry shape for the tall phone aspect ratio */
 		.geometry-shape {
-			width: 100%;
+			width: 100%; /* Make it full width relative to wrapper */
 			left: 0;
 			right: 0;
+			bottom: 0;
+			height: 75%; /* Taller background for taller phone */
 			border-radius: 20px;
 		}
 	}

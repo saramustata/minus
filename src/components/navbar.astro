@@ -25,7 +25,7 @@
         </a>
     </div>
 
-    <div class="mobile-menu-icon">
+    <button id="menu-toggle" class="mobile-menu-icon" aria-label="Toggle Menu">
         <svg
             width="24"
             height="24"
@@ -40,15 +40,44 @@
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <line x1="3" y1="18" x2="21" y2="18"></line>
         </svg>
-    </div>
+    </button>
 </nav>
 
+<div id="mobile-menu" class="mobile-menu hidden">
+    <a href="/news" class="mobile-link">News</a>
+    <a href="/metrics" class="mobile-link">Metrics</a>
+    <a href="/how-to" class="mobile-link">How-to</a>
+    <a href="/contact" class="mobile-link">Team</a>
+    <hr class="mobile-divider" />
+    <a href="/contact" class="mobile-cta">Contact Us ↗</a>
+</div>
+
+<script>
+    // This script runs on the client side
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    if (menuToggle && mobileMenu) {
+        menuToggle.addEventListener("click", () => {
+            // Toggle the 'hidden' class to show/hide the menu
+            mobileMenu.classList.toggle("hidden");
+
+            // Optional: Toggle an 'active' class on the button for animation
+            menuToggle.classList.toggle("active");
+        });
+    }
+</script>
+
 <style>
+    /* --- Base Styles --- */
     .navbar {
-        padding: 20px var(--page-padding); /* Uses responsive variable */
+        padding: 20px var(--page-padding);
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: relative; /* Needed for z-index context */
+        background-color: var(--background);
+        z-index: 50;
     }
 
     .navbar-center {
@@ -60,7 +89,7 @@
         text-decoration: none;
         color: var(--text-headline);
         font-family: font2;
-        font-size: var(--font-size-button); /* Scaled down slightly */
+        font-size: var(--font-size-subheading);
         transition: color 0.2s;
     }
 
@@ -92,21 +121,81 @@
     }
 
     .logo {
-        height: 40px; /* Adjusted to match standard sizing */
+        height: 40px;
     }
 
-    /* Mobile Menu Toggle Logic */
+    /* --- Mobile Menu Styles --- */
     .mobile-menu-icon {
-        display: none; /* Hidden by default */
+        display: none;
+        background: none;
+        border: none;
         cursor: pointer;
+        padding: 5px;
+        color: var(--text-headline);
     }
 
+    /* The actual dropdown menu */
+    .mobile-menu {
+        position: absolute;
+        top: 80px; /* Adjust based on navbar height */
+        left: 0;
+        width: 100%;
+        background-color: var(--background);
+        padding: 20px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        border-bottom: 1px solid var(--divider-color);
+        z-index: 40;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Helper class to hide the menu */
+    .hidden {
+        display: none;
+    }
+
+    .mobile-link {
+        font-family: font2;
+        font-size: 18px;
+        text-decoration: none;
+        color: var(--text-headline);
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    .mobile-cta {
+        font-family: font2;
+        font-weight: bold;
+        text-decoration: none;
+        color: var(--accent1);
+        font-size: 18px;
+        padding-bottom: 20px;
+    }
+
+    .mobile-divider {
+        width: 80%;
+        border: none;
+        border-top: 1px solid var(--divider-color);
+        margin: 10px 0;
+    }
+
+    /* --- Responsiveness --- */
     @media (max-width: 768px) {
         .desktop-only {
-            display: none; /* Hide links on mobile */
+            display: none;
         }
         .mobile-menu-icon {
-            display: block; /* Show hamburger on mobile */
+            display: block;
+        }
+    }
+
+    /* Ensure mobile menu doesn't show up on resize to desktop */
+    @media (min-width: 769px) {
+        .mobile-menu {
+            display: none !important;
         }
     }
 </style>

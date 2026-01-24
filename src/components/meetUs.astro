@@ -1,0 +1,201 @@
+---
+const teamMembers = [
+    {
+        name: "Name",
+        role: "Role in the project",
+        img: "/src/assets/member1.png",
+    },
+    {
+        name: "Name",
+        role: "Role in the project",
+        img: "/src/assets/member2.png",
+    },
+    {
+        name: "Name",
+        role: "Role in the project",
+        img: "/src/assets/member3.png",
+    },
+    {
+        name: "Name",
+        role: "Role in the project",
+        img: "/src/assets/member4.png",
+    },
+    {
+        name: "Name",
+        role: "Role in the project",
+        img: "/src/assets/member5.png",
+    },
+    {
+        name: "Name",
+        role: "Role in the project",
+        img: "/src/assets/member6.png",
+    },
+];
+---
+
+<section class="meet-us-section">
+    <h2 class="section-heading">Our Team</h2>
+
+    <div class="featured-member">
+        <div class="image-bg-wrapper featured-wrapper">
+            <img
+                src="/src/assets/member-leader.png"
+                alt="Team Lead"
+                class="member-img"
+            />
+        </div>
+        <h3 class="member-name featured-name">Name</h3>
+        <p class="member-role">Role in the project</p>
+        <a href="#" class="read-more-btn">Read more ↗</a>
+    </div>
+
+    <div class="team-grid">
+        {
+            teamMembers.map((member) => (
+                <div class="member-card">
+                    <div class="image-bg-wrapper">
+                        <img
+                            src={member.img}
+                            alt={member.name}
+                            class="member-img"
+                        />
+                    </div>
+                    <h3 class="member-name">{member.name}</h3>
+                    <p class="member-role">{member.role}</p>
+                    <a href="#" class="read-more-btn">
+                        Read more ↗
+                    </a>
+                </div>
+            ))
+        }
+    </div>
+</section>
+
+<style>
+    .meet-us-section {
+        padding: 60px var(--page-padding);
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .section-heading {
+        font-family: font1;
+        font-size: var(--font-size-heading);
+        margin-bottom: 60px;
+        color: var(--text-headline);
+    }
+
+    /* --- Featured Member Styles --- */
+    .featured-member {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 80px;
+    }
+
+    .image-bg-wrapper {
+        background-color: var(--accent3); /* The green background circle */
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end; /* Aligns image to bottom of circle */
+        overflow: hidden;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    /* Hover effect for fun */
+    .member-card:hover .image-bg-wrapper,
+    .featured-member:hover .image-bg-wrapper {
+        transform: scale(1.05);
+        background-color: var(--accent1); /* Darker green on hover */
+    }
+
+    .featured-wrapper {
+        width: 250px;
+        height: 250px;
+    }
+
+    .member-img {
+        width: 90%;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .member-name {
+        font-family: font1;
+        font-size: 24px;
+        color: var(--accent1); /* Using your green accent for names */
+        margin: 0 0 5px 0;
+    }
+
+    .featured-name {
+        font-size: 32px;
+    }
+
+    .member-role {
+        font-family: font2;
+        color: var(--text-paragraph);
+        margin: 0 0 15px 0;
+        font-size: 14px;
+    }
+
+    .read-more-btn {
+        display: inline-block;
+        padding: 6px 16px;
+        background-color: var(--accent1);
+        color: var(--text-on-accent);
+        border-radius: 100px;
+        text-decoration: none;
+        font-family: font2;
+        font-size: 12px;
+        transition: background 0.2s;
+    }
+
+    .read-more-btn:hover {
+        background-color: var(--accent3);
+    }
+
+    /* --- Grid Styles --- */
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 60px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .member-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .member-card .image-bg-wrapper {
+        width: 180px;
+        height: 180px;
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 1024px) {
+        .team-grid {
+            grid-template-columns: repeat(2, 1fr); /* 2 columns on tablet */
+        }
+    }
+
+    @media (max-width: 768px) {
+        .team-grid {
+            grid-template-columns: 1fr; /* 1 column on mobile */
+            gap: 40px;
+        }
+
+        .featured-wrapper {
+            width: 200px;
+            height: 200px;
+        }
+
+        .featured-name {
+            font-size: 28px;
+        }
+    }
+</style>

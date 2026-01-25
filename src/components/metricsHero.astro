@@ -3,45 +3,64 @@ import MetricsHeroContent from "./metricsHeroContent.astro";
 ---
 
 <section class="section-container">
-    <div class="device-wrapper">
-        <div class="device-chassis">
-            <div class="device-notch"></div>
+    <div class="geometry-container">
+        <div class="device-wrapper">
+            <div class="device-chassis">
+                <div class="device-notch"></div>
 
-            <div class="iphone-buttons"></div>
+                <div class="iphone-buttons"></div>
 
-            <div class="device-screen">
-                <div class="dashboard-content">
-                    <MetricsHeroContent />
+                <div class="device-screen">
+                    <div class="dashboard-content">
+                        <MetricsHeroContent />
+                    </div>
                 </div>
-                <div class="home-indicator"></div>
             </div>
         </div>
 
-        <div class="laptop-base">
-            <div class="laptop-opener"></div>
-        </div>
+        <div class="geometry-shape"></div>
     </div>
 </section>
-
 <style>
     /* --- GLOBAL LAYOUT --- */
     .section-container {
         width: 100%;
-        /* Max width constrains the laptop size */
-        max-width: 1000px;
-        margin: 4rem auto;
-        padding: 0 1rem;
         font-family: "Inter", sans-serif;
         display: flex;
         justify-content: center;
+        /* Add overflow hidden if you want the shape to strictly stop at section bounds */
+        overflow: hidden;
+        padding-bottom: 0;
+    }
+
+    .geometry-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end; /* Align items to bottom so they sit on the "floor" */
+        margin-top: 20px;
+        width: 100%;
+        max-width: 1400px; /* Cap the width so the shape doesn't span ultra-wide screens */
+        padding: 0;
+    }
+
+    .geometry-shape {
+        position: absolute;
+        width: 100%;
+        height: 75%;
+        background-color: var(--accent3);
+        border-radius: 40px;
+        z-index: 1;
     }
 
     .device-wrapper {
-        width: 100%;
+        width: 75%; /* The laptop is narrower than the container/shape */
         display: flex;
         flex-direction: column;
         align-items: center;
         perspective: 1000px;
+        z-index: 2; /* Sits on top of the shape */
+        margin-bottom: 0; /* Ensure it sits on the bottom line */
     }
 
     /* --- DESKTOP STATE (Default: Laptop) --- */
@@ -49,19 +68,18 @@ import MetricsHeroContent from "./metricsHeroContent.astro";
     .device-chassis {
         position: relative;
         width: 100%;
-        /* Laptop Lid Styles */
         background: #1d1d1f;
-        border-radius: 20px 20px 0 0; /* Top corners rounded */
-        padding: 12px 12px 0 12px; /* Bezel thickness */
+        border-radius: 20px 20px 0 0;
+        padding: 12px 12px 0 12px;
         box-shadow: inset 0 0 0 2px #3a3a3c;
         box-sizing: border-box;
-        transition: all 0.5s ease; /* Smooth morphing animation */
+        transition: all 0.5s ease;
     }
 
     .device-screen {
         position: relative;
         width: 100%;
-        aspect-ratio: 16 / 10; /* Laptop Ratio */
+        aspect-ratio: 16 / 9;
         background: #000;
         overflow: hidden;
         border-radius: 6px 6px 0 0;
@@ -69,9 +87,8 @@ import MetricsHeroContent from "./metricsHeroContent.astro";
     }
 
     .device-notch {
-        /* Laptop Webcam Style */
         position: absolute;
-        top: 0;
+        top: 2px;
         left: 50%;
         transform: translateX(-50%);
         width: 12%;
@@ -84,68 +101,45 @@ import MetricsHeroContent from "./metricsHeroContent.astro";
         transition: all 0.5s ease;
     }
 
-    .laptop-base {
-        width: 120%;
-        height: 16px;
-        background: linear-gradient(to bottom, #e2e2e4, #a1a1a3);
-        border-radius: 0 0 16px 16px;
-        position: relative;
-        z-index: 10;
-        margin-top: -1px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    }
-
-    .laptop-opener {
-        width: 15%;
-        height: 6px;
-        background: #bdbebf;
-        margin: 0 auto;
-        border-radius: 0 0 6px 6px;
-    }
-
-    .home-indicator {
-        display: none;
-    } /* No home bar on laptop */
     .iphone-buttons {
         display: none;
-    } /* No side buttons on laptop */
+    }
 
-    /* --- CONTENT STYLES (Shared) --- */
     .dashboard-content {
         width: 100%;
         height: 100%;
         position: relative;
     }
 
-    /* --- MOBILE STATE (The Morph to iPhone) --- */
+    /* --- MOBILE STATE --- */
 
     @media (max-width: 768px) {
-        .section-container {
-            /* Constrain width to look like a phone */
-            max-width: 360px;
-            margin: 2rem auto;
+        .geometry-shape {
+            width: 100%;
+            height: 75%;
+            /* Keep the flat bottom on mobile too */
+            border-radius: 30px;
         }
 
-        /* Hide Laptop Parts */
-        .laptop-base {
-            display: none;
+        .device-wrapper {
+            width: 75%;
+            max-width: 400px; /* Don't let the phone get massive */
         }
 
         /* MORPH: Chassis becomes Phone Body */
         .device-chassis {
-            background: #000; /* Phone border is usually glossy black or steel */
-            border-radius: 50px; /* High radius for iPhone corners */
-            padding: 12px; /* Bezel thickness */
+            background: #000;
+            border-radius: 50px 50px 0 0;
+            padding: 12px 12px 0 12px;
             box-shadow:
                 0 0 0 4px #3a3a3c,
-                /* Outer metal frame */ 0 20px 50px rgba(0, 0, 0, 0.5); /* Drop shadow */
+                0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
         /* MORPH: Screen Aspect Ratio */
         .device-screen {
-            /* iPhone 14/15 Pro Ratio (approx 19.5:9) */
-            aspect-ratio: 9 / 19;
-            border-radius: 40px; /* Match internal screen curve */
+            aspect-ratio: 9 / 16;
+            border-radius: 40px 40px 0 0;
         }
 
         /* MORPH: Webcam becomes Dynamic Island */
@@ -153,22 +147,8 @@ import MetricsHeroContent from "./metricsHeroContent.astro";
             width: 35%;
             height: 25px;
             background: black;
-            top: 20px; /* Float inside the screen area */
+            top: 20px;
             border-radius: 20px;
-            z-index: 50;
-        }
-
-        /* Add iPhone Home Indicator */
-        .home-indicator {
-            display: block;
-            position: absolute;
-            bottom: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 10px;
             z-index: 50;
         }
 
@@ -176,13 +156,13 @@ import MetricsHeroContent from "./metricsHeroContent.astro";
         .iphone-buttons {
             display: block;
             position: absolute;
-            left: -6px; /* Stick out left side */
+            left: -6px;
             top: 100px;
             width: 4px;
             height: 30px;
             background: #222;
             border-radius: 4px 0 0 4px;
-            box-shadow: 0 50px 0 #222; /* Second button using shadow hack */
+            box-shadow: 0 50px 0 #222;
         }
     }
 </style>

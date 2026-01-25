@@ -18,7 +18,12 @@
         <a href="/contact" class="button-right"> Contact Us ↗ </a>
     </div>
 
-    <button id="menu-toggle" class="mobile-menu-icon" aria-label="Toggle Menu">
+    <button
+        id="menu-toggle"
+        class="mobile-menu-icon"
+        aria-label="Toggle Menu"
+        aria-expanded="false"
+    >
         <svg
             width="24"
             height="24"
@@ -51,13 +56,39 @@
     const mobileMenu = document.getElementById("mobile-menu");
 
     if (menuToggle && mobileMenu) {
-        menuToggle.addEventListener("click", () => {
-            // Toggle the 'hidden' class to show/hide the menu
-            mobileMenu.classList.toggle("hidden");
+        // Ensure `aria-hidden` reflects the initial state in the DOM
+        mobileMenu.setAttribute(
+            "aria-hidden",
+            String(mobileMenu.classList.contains("hidden")),
+        );
 
-            // Optional: Toggle an 'active' class on the button for animation
+        const closeMenu = () => {
+            mobileMenu.classList.add("hidden");
+            menuToggle.classList.remove("active");
+            menuToggle.setAttribute("aria-expanded", "false");
+            mobileMenu.setAttribute("aria-hidden", "true");
+        };
+
+        menuToggle.addEventListener("click", () => {
+            const nowHidden = mobileMenu.classList.toggle("hidden");
             menuToggle.classList.toggle("active");
+            // aria-expanded should reflect whether the menu is visible
+            menuToggle.setAttribute("aria-expanded", String(!nowHidden));
+            mobileMenu.setAttribute("aria-hidden", String(nowHidden));
         });
+
+        // Close the menu on various user interactions that indicate navigation/scroll
+        window.addEventListener("scroll", closeMenu, { passive: true });
+        window.addEventListener("touchmove", closeMenu, { passive: true });
+        window.addEventListener("resize", closeMenu);
+        window.addEventListener("orientationchange", closeMenu);
+        window.addEventListener("wheel", closeMenu, { passive: true });
+
+        // Close the menu when any mobile link is clicked (useful for single-page/nav)
+        const mobileLinks = mobileMenu.querySelectorAll("a");
+        mobileLinks.forEach((link) =>
+            link.addEventListener("click", closeMenu),
+        );
     }
 </script>
 
@@ -127,6 +158,10 @@
         color: var(--text-headline);
     }
 
+    .mobile-menu-icon svg:hover {
+        color: var(--accent6);
+    }
+
     /* The actual dropdown menu */
     .mobile-menu {
         position: absolute;
@@ -142,11 +177,23 @@
         border-bottom: 1px solid var(--divider-color);
         z-index: 40;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+        /* Start hidden by the `.hidden` class (so default markup can include it)
+           Use transform + opacity for smooth transitions instead of toggling `display`. */
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+        transition:
+            transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1),
+            opacity 200ms ease;
+        will-change: transform, opacity;
     }
 
-    /* Helper class to hide the menu */
+    /* Helper class to hide the menu with a smooth up/down transition */
     .hidden {
-        display: none;
+        transform: translateY(-12px);
+        opacity: 0;
+        pointer-events: none;
     }
 
     .mobile-link {
@@ -159,6 +206,10 @@
         padding: 10px 0;
     }
 
+    .mobile-link:hover {
+        color: var(--accent6);
+    }
+
     .mobile-cta {
         font-family: font2;
         font-weight: bold;
@@ -166,6 +217,10 @@
         color: var(--accent1);
         font-size: 18px;
         padding-bottom: 20px;
+    }
+
+    .mobile-cta:hover {
+        color: var(--accent3);
     }
 
     .mobile-divider {

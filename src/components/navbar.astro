@@ -6,30 +6,102 @@
     <div class="navbar-left">
         <img src="/src/assets/logo.svg" alt="Logo" class="logo" />
     </div>
-    <div class="navbar-center">
-        <a href="/news" class="navbar-item">News</a>
-        <a href="/metrics" class="navbar-item">Metrics</a>
-        <a href="/how-to" class="navbar-item">How-to</a>
-        <a href="/contact" class="navbar-item">Team</a>
+
+    <div class="navbar-center desktop-only">
+        <a href="#news" class="navbar-item">News</a>
+        <a href="#metrics" class="navbar-item">Metrics</a>
+        <a href="#how-to" class="navbar-item">How-to</a>
+        <a href="#team" class="navbar-item">Team</a>
     </div>
-    <div class="navbar-right">
-        <a href="/contact" class="button-right">
-            Contact Us
-            <img
-                src="/src/assets/diagonalArrow.svg"
-                alt="Arrow"
-                class="contact-arrow"
-            />
-        </a>
+
+    <div class="navbar-right desktop-only">
+        <a href="#team" class="button-right"> Contact Us ↗ </a>
     </div>
+
+    <button
+        id="menu-toggle"
+        class="mobile-menu-icon"
+        aria-label="Toggle Menu"
+        aria-expanded="false"
+    >
+        <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
 </nav>
 
+<div id="mobile-menu" class="mobile-menu hidden">
+    <a href="#news" class="mobile-link">News</a>
+    <a href="#metrics" class="mobile-link">Metrics</a>
+    <a href="#how-to" class="mobile-link">How-to</a>
+    <a href="#team" class="mobile-link">Team</a>
+    <hr class="mobile-divider" />
+    <a href="#team" class="mobile-cta">Contact Us ↗</a>
+</div>
+
+<script>
+    // This script runs on the client side
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    if (menuToggle && mobileMenu) {
+        // Ensure `aria-hidden` reflects the initial state in the DOM
+        mobileMenu.setAttribute(
+            "aria-hidden",
+            String(mobileMenu.classList.contains("hidden")),
+        );
+
+        const closeMenu = () => {
+            mobileMenu.classList.add("hidden");
+            menuToggle.classList.remove("active");
+            menuToggle.setAttribute("aria-expanded", "false");
+            mobileMenu.setAttribute("aria-hidden", "true");
+        };
+
+        menuToggle.addEventListener("click", () => {
+            const nowHidden = mobileMenu.classList.toggle("hidden");
+            menuToggle.classList.toggle("active");
+            // aria-expanded should reflect whether the menu is visible
+            menuToggle.setAttribute("aria-expanded", String(!nowHidden));
+            mobileMenu.setAttribute("aria-hidden", String(nowHidden));
+        });
+
+        // Close the menu on various user interactions that indicate navigation/scroll
+        window.addEventListener("scroll", closeMenu, { passive: true });
+        window.addEventListener("touchmove", closeMenu, { passive: true });
+        window.addEventListener("resize", closeMenu);
+        window.addEventListener("orientationchange", closeMenu);
+        window.addEventListener("wheel", closeMenu, { passive: true });
+
+        // Close the menu when any mobile link is clicked (useful for single-page/nav)
+        const mobileLinks = mobileMenu.querySelectorAll("a");
+        mobileLinks.forEach((link) =>
+            link.addEventListener("click", closeMenu),
+        );
+    }
+</script>
+
 <style>
+    /* --- Base Styles --- */
     .navbar {
-        padding: 20px 40px;
+        padding: 20px var(--page-padding);
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: relative; /* Needed for z-index context */
+        background-color: var(--background);
+        z-index: 50;
     }
 
     .navbar-center {
@@ -52,23 +124,126 @@
     .button-right {
         display: flex;
         align-items: center;
-        padding: 14px 14px;
+        padding: 10px 20px;
         background-color: var(--accent1);
         color: var(--text-on-accent);
+        font-family: font2;
         text-decoration: none;
         border-radius: 1000px;
         transition: background-color 0.2s;
+        font-size: var(--font-size-button);
+        white-space: nowrap;
     }
+
     .button-right:hover {
         background-color: var(--accent3);
     }
 
     .contact-arrow {
         height: 9px;
-        padding: 10px;
+        margin-left: 8px;
     }
 
     .logo {
-        height: 65px;
+        height: 40px;
+    }
+
+    /* --- Mobile Menu Styles --- */
+    .mobile-menu-icon {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        color: var(--text-headline);
+    }
+
+    .mobile-menu-icon svg:hover {
+        color: var(--accent6);
+    }
+
+    /* The actual dropdown menu */
+    .mobile-menu {
+        position: absolute;
+        top: 80px; /* Adjust based on navbar height */
+        left: 0;
+        width: 100%;
+        background-color: var(--background);
+        padding: 20px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        border-bottom: 1px solid var(--divider-color);
+        z-index: 40;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+        /* Start hidden by the `.hidden` class (so default markup can include it)
+           Use transform + opacity for smooth transitions instead of toggling `display`. */
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+        transition:
+            transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1),
+            opacity 200ms ease;
+        will-change: transform, opacity;
+    }
+
+    /* Helper class to hide the menu with a smooth up/down transition */
+    .hidden {
+        transform: translateY(-12px);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .mobile-link {
+        font-family: font2;
+        font-size: 18px;
+        text-decoration: none;
+        color: var(--text-headline);
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    .mobile-link:hover {
+        color: var(--accent6);
+    }
+
+    .mobile-cta {
+        font-family: font2;
+        font-weight: bold;
+        text-decoration: none;
+        color: var(--accent1);
+        font-size: 18px;
+        padding-bottom: 20px;
+    }
+
+    .mobile-cta:hover {
+        color: var(--accent3);
+    }
+
+    .mobile-divider {
+        width: 80%;
+        border: none;
+        border-top: 1px solid var(--divider-color);
+        margin: 10px 0;
+    }
+
+    /* --- Responsiveness --- */
+    @media (max-width: 768px) {
+        .desktop-only {
+            display: none;
+        }
+        .mobile-menu-icon {
+            display: block;
+        }
+    }
+
+    /* Ensure mobile menu doesn't show up on resize to desktop */
+    @media (min-width: 769px) {
+        .mobile-menu {
+            display: none !important;
+        }
     }
 </style>

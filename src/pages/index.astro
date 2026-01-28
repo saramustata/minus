@@ -1,13 +1,22 @@
 ---
-import Welcome from "../components/Welcome.astro";
+import Welcome from "../components/welcome.astro";
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/navbar.astro";
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Impact from "../components/impact.astro";
+import ImageDivider from "../components/imageDivider.astro";
+import News from "../components/news.astro";
+import Sustainability from "../components/sustainability.astro";
+import MeetUs from "../components/meetUs.astro";
+import Footer from "../components/footer.astro";
 ---
 
 <Layout>
 	<Navbar />
 	<Welcome />
+	<Impact />
+	<ImageDivider />
+	<News />
+	<Sustainability />
+	<MeetUs />
+	<Footer />
 </Layout>

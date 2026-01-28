@@ -1,0 +1,147 @@
+---
+const newsItems = [
+    { title: "Title", desc: "Description", img: "/src/assets/news1.png" },
+    { title: "Title", desc: "Description", img: "/src/assets/news2.png" },
+    { title: "Title", desc: "Description", img: "/src/assets/news3.png" },
+];
+---
+
+<section id="news" class="news-section">
+    <h2 class="news-heading">News</h2>
+    <p class="news-sub">
+        You need a solution that keeps up. That's why we developed Area. A
+        developer-friendly approach to streamline your business.
+    </p>
+
+    <div class="news-grid">
+        {
+            newsItems.map((item) => (
+                <div class="news-card">
+                    <div class="image-wrapper">
+                        <div class="placeholder-img" />
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">{item.title}</h3>
+                        <p class="card-desc">{item.desc}</p>
+                        <a href="#" class="learn-more-btn">
+                            Learn More
+                            <span class="arrow">↗</span>
+                        </a>
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+
+    <div class="center-btn">
+        <a href="#" class="discover-btn">Discover More</a>
+    </div>
+</section>
+
+<style>
+    .news-section {
+        padding: 60px 40px;
+        text-align: center;
+    }
+
+    .news-heading {
+        font-family: font1;
+        font-size: var(--font-size-heading);
+        margin-bottom: 20px;
+    }
+
+    .news-sub {
+        font-family: font2;
+        color: var(--text-paragraph);
+        max-width: 600px;
+        margin: 0 auto 60px auto;
+    }
+
+    .news-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-bottom: 60px;
+        text-align: left;
+    }
+
+    .news-card {
+        border: 1px solid var(--divider-color);
+        border-radius: 20px;
+        overflow: hidden;
+        padding: 20px;
+    }
+
+    .image-wrapper {
+        width: 100%;
+        height: 250px;
+        background-color: #ccc; /* Placeholder color */
+        border-radius: 15px;
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    .placeholder-img {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom right, #ddd, #999);
+    }
+
+    .card-title {
+        font-family: font2;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .card-desc {
+        font-family: font2;
+        color: var(--text-paragraph);
+        margin-bottom: 20px;
+    }
+
+    .learn-more-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: var(--accent1);
+        color: var(--text-on-accent);
+        border-radius: 100px;
+        text-decoration: none;
+        font-family: font2;
+        font-size: var(--font-size-button);
+        transition: background 0.2s;
+    }
+
+    .learn-more-btn:hover {
+        background-color: var(--accent3);
+    }
+
+    .arrow {
+        margin-left: 5px;
+    }
+
+    .center-btn {
+        display: flex;
+        justify-content: center;
+    }
+
+    .discover-btn {
+        padding: 14px 28px;
+        background-color: var(--accent2);
+        color: var(--text-headline);
+        border-radius: 100px;
+        text-decoration: none;
+        font-family: font2;
+        font-weight: bold;
+    }
+
+    .discover-btn:hover {
+        background-color: var(--accent3);
+        color: var(--accent2);
+    }
+
+    @media (max-width: 768px) {
+        .news-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

@@ -1,0 +1,168 @@
+---
+import MetricsHeroContent from "./metricsHeroContent.astro";
+---
+
+<section id="metrics" class="section-container">
+    <div class="geometry-container">
+        <div class="device-wrapper">
+            <div class="device-chassis">
+                <div class="device-notch"></div>
+
+                <div class="iphone-buttons"></div>
+
+                <div class="device-screen">
+                    <div class="dashboard-content">
+                        <MetricsHeroContent />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="geometry-shape"></div>
+    </div>
+</section>
+<style>
+    /* --- GLOBAL LAYOUT --- */
+    .section-container {
+        width: 100%;
+        font-family: "Inter", sans-serif;
+        display: flex;
+        justify-content: center;
+        /* Add overflow hidden if you want the shape to strictly stop at section bounds */
+        overflow: hidden;
+        padding-bottom: 0;
+    }
+
+    .geometry-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end; /* Align items to bottom so they sit on the "floor" */
+        margin-top: 20px;
+        width: 100%;
+        max-width: 1400px; /* Cap the width so the shape doesn't span ultra-wide screens */
+        padding: 0;
+    }
+
+    .geometry-shape {
+        position: absolute;
+        width: 100%;
+        height: 75%;
+        background-color: var(--accent3);
+        border-radius: 40px;
+        z-index: 1;
+    }
+
+    .device-wrapper {
+        width: 75%; /* The laptop is narrower than the container/shape */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        perspective: 1000px;
+        z-index: 2; /* Sits on top of the shape */
+        margin-bottom: 0; /* Ensure it sits on the bottom line */
+    }
+
+    /* --- DESKTOP STATE (Default: Laptop) --- */
+
+    .device-chassis {
+        position: relative;
+        width: 100%;
+        background: #1d1d1f;
+        border-radius: 20px 20px 0 0;
+        padding: 12px 12px 0 12px;
+        box-shadow: inset 0 0 0 2px #3a3a3c;
+        box-sizing: border-box;
+        transition: all 0.5s ease;
+    }
+
+    .device-screen {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: #000;
+        overflow: hidden;
+        border-radius: 6px 6px 0 0;
+        transition: all 0.5s ease;
+    }
+
+    .device-notch {
+        position: absolute;
+        top: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 12%;
+        max-width: 140px;
+        height: 25px;
+        background-color: #1d1d1f;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        z-index: 20;
+        transition: all 0.5s ease;
+    }
+
+    .iphone-buttons {
+        display: none;
+    }
+
+    .dashboard-content {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    /* --- MOBILE STATE --- */
+
+    @media (max-width: 768px) {
+        .geometry-shape {
+            width: 100%;
+            height: 75%;
+            /* Keep the flat bottom on mobile too */
+            border-radius: 30px;
+        }
+
+        .device-wrapper {
+            width: 75%;
+            max-width: 400px; /* Don't let the phone get massive */
+        }
+
+        /* MORPH: Chassis becomes Phone Body */
+        .device-chassis {
+            background: #000;
+            border-radius: 50px 50px 0 0;
+            padding: 12px 12px 0 12px;
+            box-shadow:
+                0 0 0 4px #3a3a3c,
+                0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        /* MORPH: Screen Aspect Ratio */
+        .device-screen {
+            aspect-ratio: 9 / 16;
+            border-radius: 40px 40px 0 0;
+        }
+
+        /* MORPH: Webcam becomes Dynamic Island */
+        .device-notch {
+            width: 35%;
+            height: 25px;
+            background: black;
+            top: 20px;
+            border-radius: 20px;
+            z-index: 50;
+        }
+
+        /* Add Side Buttons */
+        .iphone-buttons {
+            display: block;
+            position: absolute;
+            left: -6px;
+            top: 100px;
+            width: 4px;
+            height: 30px;
+            background: #222;
+            border-radius: 4px 0 0 4px;
+            box-shadow: 0 50px 0 #222;
+        }
+    }
+</style>

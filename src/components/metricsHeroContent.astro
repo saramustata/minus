@@ -1,0 +1,338 @@
+---
+// --- 1. THE LOGIC (Server-Side) ---
+
+const stats = {
+    efficiency: 78,
+    label: "Efficiency Improvements",
+    regions: 33,
+};
+
+const graphData = [
+    { year: 2021, value: 3.5 },
+    { year: 2022, value: 10.0 },
+    { year: 2023, value: 4.8 },
+    { year: 2024, value: 8.5 },
+    { year: 2025, value: 6.9 },
+    { year: 2026, value: 9.2 },
+    { year: 2027, value: 7.5 },
+    { year: 2028, value: 8.0 },
+    { year: 2029, value: 6.5 },
+    { year: 2030, value: 9.5 },
+    { year: 2031, value: 10.0 },
+    { year: 2032, value: 8.8 },
+];
+
+const maxVal = 10;
+const maxHeight = maxVal * 1.1;
+const getHeight = (val) => `${(val / maxHeight) * 100}%`;
+---
+
+<section class="hero-container">
+    <img
+        src="src/assets/solarPanels.webp"
+        alt="Image of solar pannels in sunset"
+        class="bg-image"
+    />
+
+    <div class="overlay">
+        <div class="header-row">
+            <div class="metric-block">
+                <span class="breadcrumb">Reports &gt; Overview</span>
+                <div class="main-stat">
+                    <span class="percent">{stats.efficiency}%</span>
+                    <span class="label">{stats.label}</span>
+                </div>
+            </div>
+
+            <div class="glass-pill">
+                All Regions ({stats.regions}) <span class="arrow">▼</span>
+            </div>
+        </div>
+
+        <div class="chart-scroll-wrapper">
+            <div class="chart-container">
+                {
+                    graphData.map((point) => (
+                        <div class="chart-column">
+                            <div class="bar-wrapper">
+                                <div
+                                    class="bar-line"
+                                    style={`height: ${getHeight(point.value)}`}
+                                >
+                                    <div class="bar-dot" />
+                                </div>
+                            </div>
+                            <span class="year-text">{point.year}</span>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* General Layout */
+    .hero-container {
+        width: 100%;
+        height: 100%;
+        max-width: 1200px;
+        padding: 0;
+        margin: 0
+        font-family: "Inter", sans-serif; /* Fallback sans-serif */
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Frame Image */
+    .frame-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 3; /* On top of everything */
+        pointer-events: none; /* So clicks go through to buttons */
+    }
+
+    /* Background Image */
+    .bg-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+        filter: brightness(0.6);
+    }
+
+    .overlay {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.5) 0%,
+            rgba(0, 0, 0, 0) 50%,
+            rgba(0, 0, 0, 0.4) 100%
+        );
+        padding: 2rem;
+        padding-top: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-sizing: border-box;
+        color: white;
+    }
+
+    .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .breadcrumb {
+        display: block;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        opacity: 0.7;
+        margin-bottom: 0.5rem;
+    }
+
+    .main-stat {
+        display: flex;
+        align-items: baseline;
+        gap: 1rem;
+    }
+
+    .percent {
+        font-size: clamp(3rem, 6vw, 5rem);
+        font-family: "Playfair Display", serif;
+        font-weight: 300;
+        line-height: 1;
+    }
+
+    .label {
+        font-size: clamp(1rem, 2vw, 1.5rem);
+        font-weight: 300;
+        opacity: 0.9;
+    }
+
+    /* The "Glass" Pill Button */
+    .glass-pill {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        white-space: nowrap; /* Prevents text wrap */
+    }
+
+    .glass-pill:hover {
+        background: rgba(255, 255, 255, 0.25);
+    }
+
+    .arrow {
+        font-size: 0.6rem;
+        margin-left: 0.5rem;
+        vertical-align: middle;
+    }
+
+    /* --- CHART STYLES --- */
+    .chart-scroll-wrapper {
+        width: 100%;
+        height: 45%;
+
+        padding-top: 20px;
+        overflow: visible;
+        overflow-x: visible;
+        /* Fade effect on the right to indicate scrolling */
+        mask-image: linear-gradient(to left, black 85%, transparent 100%);
+        -webkit-mask-image: linear-gradient(
+            to left,
+            black 85%,
+            transparent 100%
+        );
+        overflow: visible;
+    }
+
+    .chart-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        height: 100%;
+        width: 100%;
+        padding-bottom: 1rem;
+        overflow: visible;
+    }
+
+    .chart-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        flex: 1; /* Equal width on desktop */
+        gap: 0.5rem;
+        cursor: pointer;
+        overflow: visible;
+    }
+
+    .bar-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        overflow: visible;
+    }
+
+    .bar-line {
+        width: 1px;
+        background-color: rgba(255, 255, 255, 0.5);
+        position: relative;
+        transition:
+            height 1s ease-out,
+            background-color 0.3s;
+        animation: growBar 1s ease-out forwards;
+        overflow: visible;
+    }
+
+    .bar-dot {
+        width: 8px;
+        height: 8px;
+        background-color: white;
+        border-radius: 50%;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        transition: transform 0.3s;
+    }
+
+    .year-text {
+        font-size: 0.75rem;
+        opacity: 0.6;
+        transition: opacity 0.3s;
+    }
+
+    .chart-column:hover .bar-line {
+        background-color: rgba(255, 255, 255, 1);
+    }
+    .chart-column:hover .year-text {
+        opacity: 1;
+    }
+    .chart-column:hover .bar-dot {
+        transform: translate(-50%, -50%) scale(1.5);
+    }
+
+    @keyframes growBar {
+        from {
+            height: 0;
+        }
+    }
+
+    /* --- THE SCROLL LOGIC --- */
+    .chart-container {
+        display: flex;
+        justify-content: flex-start;
+        gap: 20px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+
+    .chart-container::-webkit-scrollbar {
+        display: none; /* Chrome/Safari */
+    }
+
+    /* --- RESPONSIVE MOBILE ADJUSTMENTS --- */
+    @media (max-width: 768px) {
+        .dashboard-card {
+            aspect-ratio: 4 / 5;
+        }
+
+        .overlay {
+            padding: 1.5rem, 5rem;
+            /* Push content to top and bottom edges */
+            justify-content: space-between;
+        }
+
+        .header-row {
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .bar-dot {
+            /* Make dots slightly larger on mobile for touch targets */
+            width: 10px;
+            height: 10px;
+        }
+
+        .chart-column {
+            /* Force fixed width so they don't shrink */
+            flex: 0 0 50px;
+            min-width: 50px;
+
+            /* Snap alignment */
+            scroll-snap-align: end;
+        }
+    }
+</style>
+
+<script>
+    // set the scrolling to the end on load
+    const chartContainer = document.querySelector(".chart-container");
+    chartContainer.scrollLeft = chartContainer.scrollWidth;
+</script>

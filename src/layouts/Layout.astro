@@ -5,38 +5,35 @@
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>Minus - More with less</title>
 	</head>
 	<body>
 		<slot />
 	</body>
 </html>
 
-<style>
+<style is:global>
 	@font-face {
 		font-family: font1;
-		src: url('../assets/fonts/Crimson_Text/CrimsonText-Regular.ttf');
+		src: url("../assets/fonts/Crimson_Text/CrimsonText-Regular.ttf");
 	}
 	@font-face {
 		font-family: font1;
-		src: url('../assets/fonts/Crimson_Text/CrimsonText-SemiBold.ttf');
-		font-weight: lighter;
+		src: url("../assets/fonts/Crimson_Text/CrimsonText-SemiBold.ttf");
+		font-weight: bold;
 	}
 	@font-face {
 		font-family: font2;
-		src: url('../assets/fonts/DM_Sans/static/DMSans-Bold.ttf');
+		src: url("../assets/fonts/DM_Sans/static/DMSans-Bold.ttf");
 		font-weight: bold;
 	}
-	
+
 	:root {
 		/* Color Palette */
 		--background: #ffffff;
-
-		/* Text Colors */
 		--text-paragraph: #6f6f6f;
 		--text-headline: #000000;
 		--text-on-accent: #ffffff;
-
 		--divider-color: #e0e0e0;
 
 		/* Accent Colors */
@@ -47,20 +44,42 @@
 		--accent5: #e4e4e4;
 		--accent6: #929292;
 
-		--debug-highlight: #ff0000;
-
-		/* Fonts-size */
+		/* Font Sizes - Desktop Default */
 		--font-size-landing: 90px;
 		--font-size-heading: 54px;
 		--font-size-subheading: 18px;
 		--font-size-paragraph: 15px;
 		--font-size-button: 14px;
+
+		/* Spacing */
+		--page-padding: 40px;
 	}
+
+	/* Tablet Scaling */
+	@media (max-width: 1024px) {
+		:root {
+			--font-size-landing: 64px;
+			--font-size-heading: 42px;
+			--page-padding: 30px;
+		}
+	}
+
+	/* Mobile Scaling */
+	@media (max-width: 768px) {
+		:root {
+			--font-size-landing: 48px; /* Much smaller for mobile */
+			--font-size-heading: 32px;
+			--font-size-subheading: 16px;
+			--page-padding: 20px;
+		}
+	}
+
 	html,
 	body {
 		margin: 0;
 		width: 100%;
 		height: 100%;
 		background-color: var(--background);
+		overflow-x: hidden; /* Prevent horizontal scroll on mobile */
 	}
 </style>

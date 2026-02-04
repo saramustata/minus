@@ -1,29 +1,15 @@
 ---
+import metrics from "../content/metrics.json";
 // --- 1. THE LOGIC (Server-Side) ---
 
-const stats = {
-    efficiency: 78,
-    label: "Efficiency Improvements",
-    regions: 33,
-};
+const overview = metrics.overview;
+const graphData = metrics.graphData;
 
-const graphData = [
-    { year: 2021, value: 3.5 },
-    { year: 2022, value: 10.0 },
-    { year: 2023, value: 4.8 },
-    { year: 2024, value: 8.5 },
-    { year: 2025, value: 6.9 },
-    { year: 2026, value: 9.2 },
-    { year: 2027, value: 7.5 },
-    { year: 2028, value: 8.0 },
-    { year: 2029, value: 6.5 },
-    { year: 2030, value: 9.5 },
-    { year: 2031, value: 10.0 },
-    { year: 2032, value: 8.8 },
-];
+const maxVal = Math.max(...graphData.map((point) => point.value));
 
-const maxVal = 10;
-const maxHeight = maxVal * 1.1;
+// CHANGED: Increased multiplier from 1.1 to 1.35.
+// This reserves the top ~35% of the chart area for the tooltip, preventing truncation.
+const maxHeight = maxVal * 1.35;
 const getHeight = (val) => `${(val / maxHeight) * 100}%`;
 ---
 
@@ -39,13 +25,9 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
             <div class="metric-block">
                 <span class="breadcrumb">Reports &gt; Overview</span>
                 <div class="main-stat">
-                    <span class="percent">{stats.efficiency}%</span>
-                    <span class="label">{stats.label}</span>
+                    <span class="percent">{overview.value}</span>
+                    <span class="label">{overview.label}</span>
                 </div>
-            </div>
-
-            <div class="glass-pill">
-                All Regions ({stats.regions}) <span class="arrow">▼</span>
             </div>
         </div>
 
@@ -59,10 +41,14 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
                                     class="bar-line"
                                     style={`height: ${getHeight(point.value)}`}
                                 >
+                                    <span class="value-tooltip">
+                                        {point.value}
+                                    </span>
+
                                     <div class="bar-dot" />
                                 </div>
                             </div>
-                            <span class="year-text">{point.year}</span>
+                            <span class="label-text">{point.label}</span>
                         </div>
                     ))
                 }
@@ -78,7 +64,7 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
         height: 100%;
         max-width: 1200px;
         padding: 0;
-        margin: 0
+        margin: 0;
         font-family: "Inter", sans-serif; /* Fallback sans-serif */
         position: relative;
         overflow: hidden;
@@ -191,19 +177,19 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
     /* --- CHART STYLES --- */
     .chart-scroll-wrapper {
         width: 100%;
-        height: 45%;
-
+        height: 60%;
         padding-top: 20px;
+
+        /* Ensure overflow is visible so tooltips don't clip */
         overflow: visible;
         overflow-x: visible;
-        /* Fade effect on the right to indicate scrolling */
+
         mask-image: linear-gradient(to left, black 85%, transparent 100%);
         -webkit-mask-image: linear-gradient(
             to left,
             black 85%,
             transparent 100%
         );
-        overflow: visible;
     }
 
     .chart-container {
@@ -259,18 +245,51 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
         transform: translate(-50%, -50%);
         box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
         transition: transform 0.3s;
+        overflow: visible;
     }
 
-    .year-text {
+    .label-text {
         font-size: 0.75rem;
         opacity: 0.6;
         transition: opacity 0.3s;
     }
 
+    /* --- UPDATED TOOLTIP CSS --- */
+    .value-tooltip {
+        position: absolute;
+        /* Position relative to the top of the bar */
+        top: -40px;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px); /* Start slightly lower */
+
+        /* Glassmorphism style */
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+
+        color: white;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        opacity: 0; /* Hidden by default */
+        pointer-events: none;
+        white-space: nowrap;
+
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        z-index: 10;
+    }
+
+    /* Hover Effect */
+    .chart-column:hover .value-tooltip {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0); /* Floats up into place */
+    }
+
     .chart-column:hover .bar-line {
         background-color: rgba(255, 255, 255, 1);
     }
-    .chart-column:hover .year-text {
+    .chart-column:hover .label-text {
         opacity: 1;
     }
     .chart-column:hover .bar-dot {
@@ -304,8 +323,7 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
         }
 
         .overlay {
-            padding: 1.5rem, 5rem;
-            /* Push content to top and bottom edges */
+            padding: 1.5rem;
             justify-content: space-between;
         }
 
@@ -315,17 +333,13 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
         }
 
         .bar-dot {
-            /* Make dots slightly larger on mobile for touch targets */
             width: 10px;
             height: 10px;
         }
 
         .chart-column {
-            /* Force fixed width so they don't shrink */
             flex: 0 0 50px;
             min-width: 50px;
-
-            /* Snap alignment */
             scroll-snap-align: end;
         }
     }
@@ -334,5 +348,7 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
 <script>
     // set the scrolling to the end on load
     const chartContainer = document.querySelector(".chart-container");
-    chartContainer.scrollLeft = chartContainer.scrollWidth;
+    if (chartContainer) {
+        chartContainer.scrollLeft = chartContainer.scrollWidth;
+    }
 </script>

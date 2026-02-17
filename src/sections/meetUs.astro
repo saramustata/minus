@@ -5,6 +5,38 @@ const teamWithLead = await getCollection("team");
 const teamLead = teamWithLead.find((member) => member.data.index === 0);
 const teamEntries = teamWithLead.filter((member) => member.data.index !== 0);
 teamEntries.sort((a, b) => a.data.index - b.data.index);
+const teamMembers = [
+    {
+        name: "Petra Asimionesei",
+        role: "project coordinator",
+        img: "/src/assets/petra-imagine membru.png",
+    },
+    {
+        name: "Sara Mustață",
+        role: "implementation coordinator",
+        img: "/src/assets/sara-imagine membru.jpeg",
+    },
+    {
+        name: "Viktoria Ándrassy",
+        role: "expertise coordinator",
+        img: "/src/assets/viktoria-imagine membru.png",
+    },
+    {
+        name: "David Vasile",
+        role: "expertise coordinator",
+        img: "/src/assets/david-imagine membru.png",
+    },
+    {
+        name: "Călin Moraru",
+        role: "communication coordinator",
+        img: "/src/assets/calin-imagine membru.png",
+    },
+    {
+        name: "Catinca Olteanu",
+        role: "design coordinator",
+        img: "/src/assets/catinca-imagine membru.png",
+    },
+];
 ---
 
 <section id="team" class="meet-us-section">

@@ -1,72 +1,57 @@
 ---
-const teamMembers = [
-    {
-        name: "Name",
-        role: "Role in the project",
-        img: "/src/assets/member1.png",
-    },
-    {
-        name: "Name",
-        role: "Role in the project",
-        img: "/src/assets/member2.png",
-    },
-    {
-        name: "Name",
-        role: "Role in the project",
-        img: "/src/assets/member3.png",
-    },
-    {
-        name: "Name",
-        role: "Role in the project",
-        img: "/src/assets/member4.png",
-    },
-    {
-        name: "Name",
-        role: "Role in the project",
-        img: "/src/assets/member5.png",
-    },
-    {
-        name: "Name",
-        role: "Role in the project",
-        img: "/src/assets/member6.png",
-    },
-];
+import { getCollection } from "astro:content";
+const teamWithLead = await getCollection("team");
+
+const teamLead = teamWithLead.find((member) => member.data.index === 0);
+const teamEntries = teamWithLead.filter((member) => member.data.index !== 0);
+teamEntries.sort((a, b) => a.data.index - b.data.index);
 ---
 
 <section id="team" class="meet-us-section">
     <h2 class="section-heading">Our Team</h2>
-
-    <div class="featured-member">
-        <div class="image-bg-wrapper featured-wrapper">
-            <!-- <img
-                src="/src/assets/member-leader.png"
-                alt="Team Lead"
-                class="member-img"
-            /> -->
-        </div>
-        <h3 class="member-name featured-name">Name</h3>
-        <p class="member-role">Role in the project</p>
-        <a href="#" class="read-more-btn">Read more ↗</a>
-    </div>
+    {
+        teamLead && (
+            <div class="featured-member">
+                <div class="image-bg-wrapper featured-wrapper">
+                    {teamLead.data.img && (
+                        <img
+                            src={teamLead.data.img}
+                            alt={teamLead.data.name}
+                            class="member-img"
+                        />
+                    )}
+                </div>
+                <h3 class="member-name featured-name">{teamLead.data.name}</h3>
+                <p class="member-role">{teamLead.data.role}</p>
+                <a href="#" class="read-more-btn">
+                    Read more ↗
+                </a>
+            </div>
+        )
+    }
 
     <div class="team-grid">
         {
-            teamMembers.map((member) => (
-                <div class="member-card">
-                    <div class="image-bg-wrapper">
-                        {/* <img
-                            src={member.img}
-                            alt={member.name}
-                            class="member-img"
-                        /> */}
+            teamEntries.map(async (member) => {
+                const name = member.data.name;
+                const role = member.data.role;
+                const img = member.data.img;
+
+                return (
+                    <div class="member-card">
+                        <div class="image-bg-wrapper">
+                            {img && (
+                                <img src={img} alt={name} class="member-img" />
+                            )}
+                        </div>
+                        <h3 class="member-name">{name}</h3>
+                        <p class="member-role">{role}</p>
+                        <a href="#" class="read-more-btn">
+                            Read more ↗
+                        </a>
                     </div>
-                    <h3 class="member-name">{member.name}</h3>
-                    <p class="member-role">{member.role}</p>
-                    <a href="#" class="read-more-btn">
-                        Read more ↗
-                    </a>
-                </div>
-            ))
+                );
+            })
         }
     </div>
 </section>

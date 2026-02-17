@@ -1,29 +1,14 @@
 ---
+import metrics from "../content/metrics.json";
 // --- 1. THE LOGIC (Server-Side) ---
 
-const stats = {
-    efficiency: 78,
-    label: "Efficiency Improvements",
-    regions: 33,
-};
+const overview = metrics.overview;
+const graphData = metrics.graphData;
 
-const graphData = [
-    { year: 2021, value: 3.5 },
-    { year: 2022, value: 10.0 },
-    { year: 2023, value: 4.8 },
-    { year: 2024, value: 8.5 },
-    { year: 2025, value: 6.9 },
-    { year: 2026, value: 9.2 },
-    { year: 2027, value: 7.5 },
-    { year: 2028, value: 8.0 },
-    { year: 2029, value: 6.5 },
-    { year: 2030, value: 9.5 },
-    { year: 2031, value: 10.0 },
-    { year: 2032, value: 8.8 },
-];
+const maxVal = Math.max(...graphData.map((point) => point.value));
 
-const maxVal = 10;
-const maxHeight = maxVal * 1.1;
+// Increased multiplier to 1.35 to reserve ~35% headroom for tooltips
+const maxHeight = maxVal * 1.35;
 const getHeight = (val) => `${(val / maxHeight) * 100}%`;
 ---
 
@@ -39,13 +24,13 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
             <div class="metric-block">
                 <span class="breadcrumb">Reports &gt; Overview</span>
                 <div class="main-stat">
-                    <span class="percent">{stats.efficiency}%</span>
-                    <span class="label">{stats.label}</span>
+                    <span class="percent">{overview.value}</span>
+                    <span class="label">{overview.label}</span>
                 </div>
             </div>
-
             <div class="glass-pill">
-                All Regions ({stats.regions}) <span class="arrow">▼</span>
+                Region: Romania
+                <span class="arrow">▼</span>
             </div>
         </div>
 
@@ -59,10 +44,14 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
                                     class="bar-line"
                                     style={`height: ${getHeight(point.value)}`}
                                 >
+                                    <span class="value-tooltip">
+                                        {point.value}
+                                    </span>
+
                                     <div class="bar-dot" />
                                 </div>
                             </div>
-                            <span class="year-text">{point.year}</span>
+                            <span class="label-text">{point.label}</span>
                         </div>
                     ))
                 }
@@ -78,26 +67,14 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
         height: 100%;
         max-width: 1200px;
         padding: 0;
-        margin: 0
-        font-family: "Inter", sans-serif; /* Fallback sans-serif */
+        margin: 0;
+        font-family: "Inter", sans-serif;
         position: relative;
         overflow: hidden;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
     }
 
-    /* Frame Image */
-    .frame-image {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: 3; /* On top of everything */
-        pointer-events: none; /* So clicks go through to buttons */
-    }
-
-    /* Background Image */
+    /* Frame/Bg Images */
     .bg-image {
         position: absolute;
         top: 0;
@@ -188,22 +165,38 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
         vertical-align: middle;
     }
 
-    /* --- CHART STYLES --- */
+    /* --- CHART CONTAINER STYLES --- */
     .chart-scroll-wrapper {
         width: 100%;
-        height: 45%;
-
+        height: 60%; /* Increased from 45% for a taller graph */
         padding-top: 20px;
         overflow: visible;
         overflow-x: visible;
-        /* Fade effect on the right to indicate scrolling */
-        mask-image: linear-gradient(to left, black 85%, transparent 100%);
-        -webkit-mask-image: linear-gradient(
-            to left,
-            black 85%,
-            transparent 100%
+
+        /* Default: No fade on the left (for when we are at the start) */
+        mask-image: linear-gradient(to right, black 0%, black 100%);
+        -webkit-mask-image: linear-gradient(to right, black 0%, black 100%);
+
+        transition:
+            -webkit-mask-image 0.3s ease,
+            mask-image 0.3s ease;
+    }
+
+    /* Active class added via JS when scrolled away from start */
+    .chart-scroll-wrapper.scrolled {
+        /* Fades the left edge */
+        mask-image: linear-gradient(
+            to right,
+            transparent 0%,
+            black 10%,
+            black 100%
         );
-        overflow: visible;
+        -webkit-mask-image: linear-gradient(
+            to right,
+            transparent 0%,
+            black 10%,
+            black 100%
+        );
     }
 
     .chart-container {
@@ -214,6 +207,17 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
         width: 100%;
         padding-bottom: 1rem;
         overflow: visible;
+
+        /* Scroll Logic */
+        justify-content: flex-start;
+        gap: 20px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+
+    .chart-container::-webkit-scrollbar {
+        display: none;
     }
 
     .chart-column {
@@ -221,7 +225,7 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
         flex-direction: column;
         align-items: center;
         height: 100%;
-        flex: 1; /* Equal width on desktop */
+        flex: 1;
         gap: 0.5rem;
         cursor: pointer;
         overflow: visible;
@@ -259,18 +263,48 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
         transform: translate(-50%, -50%);
         box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
         transition: transform 0.3s;
+        overflow: visible;
     }
 
-    .year-text {
+    .label-text {
         font-size: 0.75rem;
         opacity: 0.6;
         transition: opacity 0.3s;
     }
 
+    /* --- TOOLTIP STYLES --- */
+    .value-tooltip {
+        position: absolute;
+        top: -40px; /* Sits 40px above the top of the bar */
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+
+        color: white;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        opacity: 0;
+        pointer-events: none;
+        white-space: nowrap;
+
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        z-index: 10;
+    }
+
+    /* Hover Effects */
+    .chart-column:hover .value-tooltip {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
     .chart-column:hover .bar-line {
         background-color: rgba(255, 255, 255, 1);
     }
-    .chart-column:hover .year-text {
+    .chart-column:hover .label-text {
         opacity: 1;
     }
     .chart-column:hover .bar-dot {
@@ -283,56 +317,54 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
         }
     }
 
-    /* --- THE SCROLL LOGIC --- */
-    .chart-container {
-        display: flex;
-        justify-content: flex-start;
-        gap: 20px;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        scrollbar-width: none;
-    }
-
-    .chart-container::-webkit-scrollbar {
-        display: none; /* Chrome/Safari */
-    }
-
-    /* --- RESPONSIVE MOBILE ADJUSTMENTS --- */
+    /* --- RESPONSIVE --- */
     @media (max-width: 768px) {
-        .dashboard-card {
-            aspect-ratio: 4 / 5;
-        }
-
         .overlay {
-            padding: 1.5rem, 5rem;
-            /* Push content to top and bottom edges */
             justify-content: space-between;
         }
-
         .header-row {
             flex-direction: column;
             gap: 1.5rem;
         }
-
         .bar-dot {
-            /* Make dots slightly larger on mobile for touch targets */
             width: 10px;
             height: 10px;
         }
-
         .chart-column {
-            /* Force fixed width so they don't shrink */
             flex: 0 0 50px;
             min-width: 50px;
-
-            /* Snap alignment */
             scroll-snap-align: end;
         }
     }
 </style>
 
 <script>
-    // set the scrolling to the end on load
     const chartContainer = document.querySelector(".chart-container");
-    chartContainer.scrollLeft = chartContainer.scrollWidth;
+    const scrollWrapper = document.querySelector(".chart-scroll-wrapper");
+
+    // 1. Initial Scroll to End
+    if (chartContainer) {
+        chartContainer.scrollLeft = chartContainer.scrollWidth;
+
+        // Initial check for mask (since we start at the end, we likely need the fade immediately)
+        // However, allow a small timeout for layout to settle
+        setTimeout(() => checkScroll(), 100);
+    }
+
+    // 2. Dynamic Mask Logic
+    const checkScroll = () => {
+        if (!chartContainer || !scrollWrapper) return;
+
+        // If we are more than 10px away from the left edge, add the fade class
+        if (chartContainer.scrollLeft > 10) {
+            scrollWrapper.classList.add("scrolled");
+        } else {
+            scrollWrapper.classList.remove("scrolled");
+        }
+    };
+
+    // Add Listener
+    if (chartContainer) {
+        chartContainer.addEventListener("scroll", checkScroll);
+    }
 </script>

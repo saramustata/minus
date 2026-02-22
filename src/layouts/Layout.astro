@@ -52,7 +52,7 @@
 		--font-size-button: 14px;
 
 		/* Spacing */
-		--page-padding: 40px;
+		--page-padding-horizontal: 40px;
 	}
 
 	/* Tablet Scaling */
@@ -78,8 +78,7 @@
 	body {
 		margin: 0;
 		width: 100%;
-		height: 100%;
 		background-color: var(--background);
-		overflow-x: hidden; /* Prevent horizontal scroll on mobile */
+		overscroll-behavior: contain;
 	}
 </style>

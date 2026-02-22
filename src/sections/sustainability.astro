@@ -6,21 +6,22 @@
     <div class="sus-content">
         <h2 class="sus-heading">Learn how to be sustainable</h2>
         <p class="sus-desc">
-            Sustainability isn’t just about saving the planet. 
-            It’s about living thoughtfully, being considerate, and looking after yourself. 
+            Sustainability isn’t just about saving the planet. It’s about living
+            thoughtfully, being considerate, and looking after yourself.
         </p>
 
         <ul class="sus-list">
             <li>
                 <span class="number">01</span>
                 <span class="text"
-                    >Reduce, reuse, recycle and repair : “The four R’s”. </span
-                >
+                    >“The four R’s”: Reduce, reuse, recycle and repair.
+                </span>
             </li>
             <li>
                 <span class="number">02</span>
                 <span class="text"
-                    >Shop consciously, Eat mindfully, Choose the right transportation.</span
+                    >Shop consciously, Eat mindfully, Choose the right
+                    transportation.</span
                 >
             </li>
             <li>
@@ -32,7 +33,8 @@
             <li>
                 <span class="number">04</span>
                 <span class="text"
-                    >Understand what sustainability means, Support green initiatives.</span
+                    >Understand what sustainability means, Support green
+                    initiatives.</span
                 >
             </li>
         </ul>
@@ -48,9 +50,10 @@
 <style>
     .sus-section {
         display: flex;
-        padding: 60px 40px;
         gap: 60px;
         align-items: center;
+        padding: 0 var(--page-padding-horizontal);
+        margin-top: 60px;
     }
 
     .sus-content {
@@ -58,6 +61,7 @@
     }
 
     .sus-heading {
+        margin-top: 0;
         font-family: font1;
         font-size: var(--font-size-heading);
         margin-bottom: 20px;
@@ -111,7 +115,7 @@
 
     .sus-image {
         flex: 1;
-        height: 600px;
+        height: 500px;
         background-color: #cdbe9e; /* Beige color from design */
         border-radius: 30px;
         overflow: hidden;
@@ -120,7 +124,9 @@
     .image-box {
         width: 100%;
         height: 100%;
-        /* Add actual image here: background-image: url(...); background-size: cover; */
+        /* background-image: url("logo.svg"); */
+        background-size: cover;
+        background-position: center;
     }
 
     @media (max-width: 900px) {

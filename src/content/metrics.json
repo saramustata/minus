@@ -1,12 +1,12 @@
 {
     "overview": {
-        "label": "CO2 Emissions",
-        "value": "71million tons"
+        "label": "Romania",
+        "value": "71 million tons"
     },
     "graphData": [
         {
             "label": "China",
-            "value": 11472 
+            "value": 11472
         },
         {
             "label": "United States",

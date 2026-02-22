@@ -8,7 +8,7 @@ const graphData = metrics.graphData;
 const maxVal = Math.max(...graphData.map((point) => point.value));
 
 // Increased multiplier to 1.35 to reserve ~35% headroom for tooltips
-const maxHeight = maxVal * 1.35;
+const maxHeight = maxVal * 1.5;
 const getHeight = (val) => `${(val / maxHeight) * 100}%`;
 ---
 
@@ -22,14 +22,16 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
     <div class="overlay">
         <div class="header-row">
             <div class="metric-block">
-                <span class="breadcrumb">Reports &gt; Overview</span>
+                <span class="breadcrumb"
+                    >Reports &gt; CO<sub>2</sub> Emissions</span
+                >
                 <div class="main-stat">
                     <span class="percent">{overview.value}</span>
                     <span class="label">{overview.label}</span>
                 </div>
             </div>
             <div class="glass-pill">
-                Region: Romania
+                Region: Worldwide
                 <span class="arrow">▼</span>
             </div>
         </div>
@@ -45,7 +47,7 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
                                     style={`height: ${getHeight(point.value)}`}
                                 >
                                     <span class="value-tooltip">
-                                        {point.value}
+                                        {point.value}Mt
                                     </span>
 
                                     <div class="bar-dot" />
@@ -132,6 +134,7 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
         font-family: "Playfair Display", serif;
         font-weight: 300;
         line-height: 1;
+        width: max-content;
     }
 
     .label {
@@ -168,7 +171,7 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
     /* --- CHART CONTAINER STYLES --- */
     .chart-scroll-wrapper {
         width: 100%;
-        height: 60%; /* Increased from 45% for a taller graph */
+        height: 80%;
         padding-top: 20px;
         overflow: visible;
         overflow-x: visible;
@@ -320,16 +323,35 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
     /* --- RESPONSIVE --- */
     @media (max-width: 768px) {
         .overlay {
+            padding: 4rem 1.25rem 1.25rem 1.25rem;
             justify-content: space-between;
         }
+
         .header-row {
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1rem; /* Slightly reduced gap */
         }
+
+        .main-stat {
+            flex-wrap: wrap; /* Allows "tons" to drop down cleanly */
+            gap: 0.5rem;
+        }
+
+        .percent {
+            /* Smaller base font size for the massive "71million" text */
+            font-size: clamp(2.25rem, 8vw, 3rem);
+            word-break: break-word; /* Prevents text from overflowing the screen */
+        }
+
+        .chart-scroll-wrapper {
+            height: 55%;
+        }
+
         .bar-dot {
             width: 10px;
             height: 10px;
         }
+
         .chart-column {
             flex: 0 0 50px;
             min-width: 50px;
@@ -341,15 +363,6 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
 <script>
     const chartContainer = document.querySelector(".chart-container");
     const scrollWrapper = document.querySelector(".chart-scroll-wrapper");
-
-    // 1. Initial Scroll to End
-    if (chartContainer) {
-        chartContainer.scrollLeft = chartContainer.scrollWidth;
-
-        // Initial check for mask (since we start at the end, we likely need the fade immediately)
-        // However, allow a small timeout for layout to settle
-        setTimeout(() => checkScroll(), 100);
-    }
 
     // 2. Dynamic Mask Logic
     const checkScroll = () => {

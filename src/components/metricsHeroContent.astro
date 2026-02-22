@@ -45,7 +45,7 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
                                     style={`height: ${getHeight(point.value)}`}
                                 >
                                     <span class="value-tooltip">
-                                        {point.value}
+                                        {point.value}Mt
                                     </span>
 
                                     <div class="bar-dot" />
@@ -360,15 +360,6 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
 <script>
     const chartContainer = document.querySelector(".chart-container");
     const scrollWrapper = document.querySelector(".chart-scroll-wrapper");
-
-    // 1. Initial Scroll to End
-    if (chartContainer) {
-        chartContainer.scrollLeft = chartContainer.scrollWidth;
-
-        // Initial check for mask (since we start at the end, we likely need the fade immediately)
-        // However, allow a small timeout for layout to settle
-        setTimeout(() => checkScroll(), 100);
-    }
 
     // 2. Dynamic Mask Logic
     const checkScroll = () => {

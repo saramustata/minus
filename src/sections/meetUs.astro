@@ -79,21 +79,22 @@ teamEntries.sort((a, b) => a.data.index - b.data.index);
     }
 
     .image-bg-wrapper {
-        background-color: var(--accent3); /* The green background circle */
+        background-color: var(--accent3); 
         border-radius: 50%;
         display: flex;
         justify-content: center;
-        align-items: flex-end; /* Aligns image to bottom of circle */
+        align-items: flex-end; 
         overflow: hidden;
         margin-bottom: 20px;
         transition: transform 0.3s ease;
+        /* FIXED: Prevents the flat-line stretching seen in your screenshot */
+        flex-shrink: 0; 
     }
 
-    /* Hover effect for fun */
     .member-card:hover .image-bg-wrapper,
     .featured-member:hover .image-bg-wrapper {
         transform: scale(1.05);
-        background-color: var(--accent1); /* Darker green on hover */
+        background-color: var(--accent1); 
     }
 
     .featured-wrapper {
@@ -110,7 +111,7 @@ teamEntries.sort((a, b) => a.data.index - b.data.index);
     .member-name {
         font-family: font1;
         font-size: 24px;
-        color: var(--accent1); /* Using your green accent for names */
+        color: var(--accent1); 
         margin: 0 0 5px 0;
     }
 
@@ -141,12 +142,13 @@ teamEntries.sort((a, b) => a.data.index - b.data.index);
         background-color: var(--accent3);
     }
 
-    /* --- Grid Styles --- */
+    /* --- Grid Styles MODIFIED --- */
     .team-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 60px 20px;
-        max-width: 1200px;
+        display: flex;            /* Changed from grid to flex */
+        flex-wrap: wrap;         /* Allows items to wrap to next line */
+        justify-content: center; /* This centers the last row! */
+        gap: 60px 40px;          /* Vertical and Horizontal gap */
+        max-width: 1000px;       /* Limits width to force 3 per row */
         margin: 0 auto;
     }
 
@@ -154,6 +156,7 @@ teamEntries.sort((a, b) => a.data.index - b.data.index);
         display: flex;
         flex-direction: column;
         align-items: center;
+        width: 280px;            /* Fixed width ensures they line up */
     }
 
     .member-card .image-bg-wrapper {
@@ -164,13 +167,14 @@ teamEntries.sort((a, b) => a.data.index - b.data.index);
     /* --- Responsive --- */
     @media (max-width: 1024px) {
         .team-grid {
-            grid-template-columns: repeat(2, 1fr); /* 2 columns on tablet */
+            max-width: 700px;    /* Forces 2 per row on tablet */
         }
     }
 
     @media (max-width: 768px) {
         .team-grid {
-            grid-template-columns: 1fr; /* 1 column on mobile */
+            flex-direction: column;
+            align-items: center;
             gap: 40px;
         }
 

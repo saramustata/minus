@@ -320,16 +320,37 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
     /* --- RESPONSIVE --- */
     @media (max-width: 768px) {
         .overlay {
+            /* Reduce side padding, add top padding to clear the notch */
+            padding: 4rem 1.25rem 1.5rem 1.25rem;
             justify-content: space-between;
         }
+
         .header-row {
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1rem; /* Slightly reduced gap */
         }
+
+        .main-stat {
+            flex-wrap: wrap; /* Allows "tons" to drop down cleanly */
+            gap: 0.5rem;
+        }
+
+        .percent {
+            /* Smaller base font size for the massive "71million" text */
+            font-size: clamp(2.25rem, 8vw, 3rem);
+            word-break: break-word; /* Prevents text from overflowing the screen */
+        }
+
+        .chart-scroll-wrapper {
+            /* Give the text above slightly more room */
+            height: 50%;
+        }
+
         .bar-dot {
             width: 10px;
             height: 10px;
         }
+
         .chart-column {
             flex: 0 0 50px;
             min-width: 50px;

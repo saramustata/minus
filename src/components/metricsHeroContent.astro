@@ -8,7 +8,7 @@ const graphData = metrics.graphData;
 const maxVal = Math.max(...graphData.map((point) => point.value));
 
 // Increased multiplier to 1.35 to reserve ~35% headroom for tooltips
-const maxHeight = maxVal * 1.35;
+const maxHeight = maxVal * 1.5;
 const getHeight = (val) => `${(val / maxHeight) * 100}%`;
 ---
 
@@ -29,7 +29,7 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
                 </div>
             </div>
             <div class="glass-pill">
-                Region: Romania
+                Region: Worldwide
                 <span class="arrow">▼</span>
             </div>
         </div>
@@ -168,7 +168,7 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
     /* --- CHART CONTAINER STYLES --- */
     .chart-scroll-wrapper {
         width: 100%;
-        height: 60%; /* Increased from 45% for a taller graph */
+        height: 80%;
         padding-top: 20px;
         overflow: visible;
         overflow-x: visible;
@@ -320,8 +320,7 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
     /* --- RESPONSIVE --- */
     @media (max-width: 768px) {
         .overlay {
-            /* Reduce side padding, add top padding to clear the notch */
-            padding: 4rem 1.25rem 1.5rem 1.25rem;
+            padding: 4rem 1.25rem 1.25rem 1.25rem;
             justify-content: space-between;
         }
 
@@ -342,8 +341,7 @@ const getHeight = (val) => `${(val / maxHeight) * 100}%`;
         }
 
         .chart-scroll-wrapper {
-            /* Give the text above slightly more room */
-            height: 50%;
+            height: 55%;
         }
 
         .bar-dot {

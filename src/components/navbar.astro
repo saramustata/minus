@@ -1,5 +1,4 @@
 ---
-
 ---
 
 <nav class="navbar">
@@ -9,7 +8,7 @@
 
     <div class="navbar-center desktop-only">
         <a href="#news" class="navbar-item">News</a>
-        <a href="https://minus-edu.base44.app" class="navbar-item">Metrics</a>
+        <a href="https://minus-edu.base44.app" class="navbar-item">The app</a>
         <a href="#how-to" class="navbar-item">How-to</a>
         <a href="#team" class="navbar-item">Team</a>
     </div>
@@ -43,7 +42,7 @@
 
 <div id="mobile-menu" class="mobile-menu hidden">
     <a href="#news" class="mobile-link">News</a>
-    <a href="https://minus-edu.base44.app" class="mobile-link">Metrics</a>
+    <a href="https://minus-edu.base44.app" class="mobile-link">Carbon footprint calculator</a>
     <a href="#how-to" class="mobile-link">How-to</a>
     <a href="#team" class="mobile-link">Team</a>
     <hr class="mobile-divider" />
@@ -55,7 +54,6 @@
     const mobileMenu = document.getElementById("mobile-menu");
     const navbarEl = document.querySelector(".navbar");
 
-    // --- Navbar Shadow Logic ---
     const updateNavbarShadow = () => {
         if (!navbarEl) return;
         if (window.scrollY > 0) {
@@ -72,7 +70,6 @@
         });
     }
 
-    // --- Mobile Menu Logic ---
     if (menuToggle && mobileMenu) {
         mobileMenu.setAttribute(
             "aria-hidden",
@@ -126,31 +123,22 @@
 </script>
 
 <style>
-    /* --- Base Styles --- */
     .navbar {
         padding: 20px var(--page-padding-horizontal);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        position: relative; /* Needed for z-index context */
-        background-color: var(--background);
-        z-index: 50;
-
         position: sticky;
         top: 0;
         left: 0;
         right: 0;
-
-        /* ensure it stays above other content */
+        background-color: var(--background);
         z-index: 999;
         -webkit-backdrop-filter: blur(6px);
         backdrop-filter: blur(6px);
-        transition:
-            box-shadow 180ms ease,
-            background-color 180ms ease;
+        transition: box-shadow 180ms ease, background-color 180ms ease;
     }
 
-    /* Show shadow only once the page is scrolled */
     .navbar.scrolled {
         box-shadow: 0 5px 8px rgba(0, 0, 0, 0.06);
     }
@@ -190,16 +178,11 @@
         background-color: var(--accent3);
     }
 
-    .contact-arrow {
-        height: 9px;
-        margin-left: 8px;
-    }
-
+    /* MODIFICATION HERE: Increased from 40px to 60px */
     .logo {
-        height: 40px;
+        height: 80px;
     }
 
-    /* --- Mobile Menu Styles --- */
     .mobile-menu-icon {
         display: none;
         background: none;
@@ -213,18 +196,13 @@
         color: var(--accent6);
     }
 
-    /* The actual dropdown menu */
     .mobile-menu {
-        /* Change this from 'absolute' to 'fixed' so it stays in the viewport */
         position: fixed;
-        top: 80px; /* Adjust this if your navbar height changes */
+        top: 80px; 
         left: 0;
         width: 100%;
-
-        /* Add these two lines to allow scrolling INSIDE the menu if needed */
         max-height: calc(100vh - 80px);
         overflow-y: auto;
-
         background-color: var(--background);
         padding: 20px 0;
         display: flex;
@@ -234,15 +212,11 @@
         border-bottom: 1px solid var(--divider-color);
         z-index: 40;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-
         transform: translateY(0);
         opacity: 1;
         pointer-events: auto;
-        transition:
-            transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1),
-            opacity 200ms ease;
+        transition: transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 200ms ease;
         will-change: transform, opacity;
-
         overscroll-behavior: contain;
     }
 
@@ -250,7 +224,6 @@
         overflow: hidden;
     }
 
-    /* Helper class to hide the menu with a smooth up/down transition */
     .hidden {
         transform: translateY(-12px);
         opacity: 0;
@@ -291,7 +264,6 @@
         margin: 10px 0;
     }
 
-    /* --- Responsiveness --- */
     @media (max-width: 768px) {
         .desktop-only {
             display: none;
@@ -301,7 +273,6 @@
         }
     }
 
-    /* Ensure mobile menu doesn't show up on resize to desktop */
     @media (min-width: 769px) {
         .mobile-menu {
             display: none !important;

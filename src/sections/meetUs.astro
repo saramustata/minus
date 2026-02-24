@@ -1,17 +1,17 @@
 ---
 import { getCollection } from "astro:content";
-const teamWithLead = await getCollection("team");
+const allMembers = await getCollection("team");
 
-// Combine everyone into one array and sort by index
-const allMembers = [...teamWithLead].sort((a, b) => a.data.index - b.data.index);
+const allMembersSorted = [...allMembers].sort(
+    (a, b) => a.data.index - b.data.index,
+);
 ---
 
 <section id="team" class="meet-us-section">
     <h2 class="section-heading">Our Team</h2>
-
     <div class="team-grid">
         {
-            allMembers.map(async (member) => {
+            allMembersSorted.map(async (member) => {
                 const name = member.data.name;
                 const role = member.data.role;
                 const img = member.data.img;
@@ -37,9 +37,9 @@ const allMembers = [...teamWithLead].sort((a, b) => a.data.index - b.data.index)
 
 <style>
     .meet-us-section {
-        padding: 60px var(--page-padding);
         text-align: center;
-        margin-bottom: 60px;
+        padding: 0 var(--page-padding-horizontal);
+        margin-top: 80px;
     }
 
     .section-heading {
@@ -49,23 +49,21 @@ const allMembers = [...teamWithLead].sort((a, b) => a.data.index - b.data.index)
         color: var(--text-headline);
     }
 
-    /* --- The Circle Styles --- */
     .image-bg-wrapper {
-        background-color: var(--accent3); 
+        background-color: var(--accent3);
         border-radius: 50%;
         display: flex;
         justify-content: center;
-        align-items: flex-end; 
+        align-items: flex-end;
         overflow: hidden;
         margin-bottom: 20px;
         transition: transform 0.3s ease;
-        flex-shrink: 0; /* Prevents stretching */
+        flex-shrink: 0;
     }
 
-    /* Hover effect */
     .member-card:hover .image-bg-wrapper {
         transform: scale(1.05);
-        background-color: var(--accent1); 
+        background-color: var(--accent1);
     }
 
     .member-img {
@@ -74,11 +72,10 @@ const allMembers = [...teamWithLead].sort((a, b) => a.data.index - b.data.index)
         object-fit: contain;
     }
 
-    /* --- Text & Button Styles --- */
     .member-name {
         font-family: font1;
         font-size: 24px;
-        color: var(--accent1); 
+        color: var(--accent1);
         margin: 0 0 5px 0;
     }
 
@@ -87,7 +84,6 @@ const allMembers = [...teamWithLead].sort((a, b) => a.data.index - b.data.index)
         color: var(--text-paragraph);
         margin: 0 0 15px 0;
         font-size: 14px;
-        font-weight: bold; /* Added bold to match your screenshot */
     }
 
     .read-more-btn {
@@ -100,7 +96,6 @@ const allMembers = [...teamWithLead].sort((a, b) => a.data.index - b.data.index)
         font-family: font2;
         font-size: 12px;
         transition: background 0.2s;
-        font-weight: bold; /* Added bold to match your screenshot */
     }
 
     .read-more-btn:hover {
@@ -124,8 +119,8 @@ const allMembers = [...teamWithLead].sort((a, b) => a.data.index - b.data.index)
 
     /* Sizing the circles */
     .member-card .image-bg-wrapper {
-        width: 180px;  /* Slightly smaller to fit 3 perfectly */
-        height: 180px; 
+        width: 180px; /* Slightly smaller to fit 3 perfectly */
+        height: 180px;
     }
 
     /* --- Responsive --- */

@@ -31,6 +31,11 @@
         {
             "label": "Japan",
             "value": 1067
+        },
+        {
+            "label": "Romania",
+            "value": 71,
+            "highlight": true
         }
     ]
 }

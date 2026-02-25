@@ -1,38 +1,17 @@
 ---
 import { getCollection } from "astro:content";
-const teamWithLead = await getCollection("team");
+const allMembers = await getCollection("team");
 
-const teamLead = teamWithLead.find((member) => member.data.index === 0);
-const teamEntries = teamWithLead.filter((member) => member.data.index !== 0);
-teamEntries.sort((a, b) => a.data.index - b.data.index);
+const allMembersSorted = [...allMembers].sort(
+    (a, b) => a.data.index - b.data.index,
+);
 ---
 
 <section id="team" class="meet-us-section">
     <h2 class="section-heading">Our Team</h2>
-    {
-        teamLead && (
-            <div class="featured-member">
-                <div class="image-bg-wrapper featured-wrapper">
-                    {teamLead.data.img && (
-                        <img
-                            src={teamLead.data.img}
-                            alt={teamLead.data.name}
-                            class="member-img"
-                        />
-                    )}
-                </div>
-                <h3 class="member-name featured-name">{teamLead.data.name}</h3>
-                <p class="member-role">{teamLead.data.role}</p>
-                <a href="#" class="read-more-btn">
-                    Read more ↗
-                </a>
-            </div>
-        )
-    }
-
     <div class="team-grid">
         {
-            teamEntries.map(async (member) => {
+            allMembersSorted.map(async (member) => {
                 const name = member.data.name;
                 const role = member.data.role;
                 const img = member.data.img;
@@ -70,14 +49,6 @@ teamEntries.sort((a, b) => a.data.index - b.data.index);
         color: var(--text-headline);
     }
 
-    /* --- Featured Member Styles --- */
-    .featured-member {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 80px;
-    }
-
     .image-bg-wrapper {
         background-color: var(--accent3);
         border-radius: 50%;
@@ -87,19 +58,12 @@ teamEntries.sort((a, b) => a.data.index - b.data.index);
         overflow: hidden;
         margin-bottom: 20px;
         transition: transform 0.3s ease;
-        /* FIXED: Prevents the flat-line stretching seen in your screenshot */
         flex-shrink: 0;
     }
 
-    .member-card:hover .image-bg-wrapper,
-    .featured-member:hover .image-bg-wrapper {
+    .member-card:hover .image-bg-wrapper {
         transform: scale(1.05);
         background-color: var(--accent1);
-    }
-
-    .featured-wrapper {
-        width: 250px;
-        height: 250px;
     }
 
     .member-img {
@@ -113,10 +77,6 @@ teamEntries.sort((a, b) => a.data.index - b.data.index);
         font-size: 24px;
         color: var(--accent1);
         margin: 0 0 5px 0;
-    }
-
-    .featured-name {
-        font-size: 32px;
     }
 
     .member-role {
@@ -142,13 +102,12 @@ teamEntries.sort((a, b) => a.data.index - b.data.index);
         background-color: var(--accent3);
     }
 
-    /* --- Grid Styles MODIFIED --- */
+    /* --- Grid Styles --- */
     .team-grid {
-        display: flex; /* Changed from grid to flex */
-        flex-wrap: wrap; /* Allows items to wrap to next line */
-        justify-content: center; /* This centers the last row! */
-        gap: 60px 40px; /* Vertical and Horizontal gap */
-        max-width: 1000px; /* Limits width to force 3 per row */
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 columns */
+        gap: 60px 20px;
+        max-width: 1200px;
         margin: 0 auto;
     }
 
@@ -156,39 +115,25 @@ teamEntries.sort((a, b) => a.data.index - b.data.index);
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 280px; /* Fixed width ensures they line up */
     }
 
+    /* Sizing the circles */
     .member-card .image-bg-wrapper {
-        width: 180px;
+        width: 180px; /* Slightly smaller to fit 3 perfectly */
         height: 180px;
     }
 
     /* --- Responsive --- */
     @media (max-width: 1024px) {
         .team-grid {
-            max-width: 700px; /* Forces 2 per row on tablet */
+            grid-template-columns: repeat(2, 1fr); /* 2 columns on tablet */
         }
     }
 
     @media (max-width: 768px) {
-        .meet-us-section {
-            margin-top: 0px;
-        }
-
         .team-grid {
-            flex-direction: column;
-            align-items: center;
+            grid-template-columns: 1fr; /* 1 column on mobile */
             gap: 40px;
-        }
-
-        .featured-wrapper {
-            width: 200px;
-            height: 200px;
-        }
-
-        .featured-name {
-            font-size: 28px;
         }
     }
 </style>

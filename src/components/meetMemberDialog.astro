@@ -1,9 +1,10 @@
 ---
 // src/components/MemberModal.astro
-// No Astro-side props needed here, as it's populated via Client-side JS.
 ---
 
 <dialog id="member-modal" class="member-modal">
+    <button class="close-modal" aria-label="Close modal">✕</button>
+
     <div class="modal-grid-layout">
         <div class="modal-image-col" id="modal-full-image-container">
             <img id="modal-full-image" src="" alt="" class="full-body-img" />
@@ -26,8 +27,6 @@
                 <p id="modal-bio" class="member-bio"></p>
             </div>
         </div>
-
-        <button class="close-modal" aria-label="Close modal">✕</button>
     </div>
 </dialog>
 
@@ -41,9 +40,9 @@
         max-width: 900px;
         width: 95%;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        overflow: hidden;
 
-        /* NEW: Constrain the height to 90% of the screen */
+        /* This prevents anything from breaking outside the rounded corners */
+        overflow: hidden;
         max-height: 90vh;
     }
 
@@ -52,80 +51,12 @@
         backdrop-filter: blur(6px);
     }
 
-    /* --- The Grid Layout --- */
-    .modal-grid-layout {
-        display: grid;
-        grid-template-columns: 2fr 3fr;
-        position: relative;
-
-        /* NEW: Allow it to stretch to the modal's max height */
-        height: 100%;
-        max-height: 90vh;
-        min-height: 500px;
-    }
-
-    .member-modal.no-full-image .modal-grid-layout {
-        grid-template-columns: 1fr; /* Switch to single column if no image */
-    }
-
-    /* --- Left Column: Full Image --- */
-    .modal-image-col {
-        background-color: var(--accent3); /* Fallback/placeholder color */
-        position: relative;
-        height: 100%;
-        min-height: 300px; /* Ensure visibility */
-    }
-
-    .full-body-img {
-        width: 100%;
-        height: 100%;
-        /* Crucial: makes the image cover the area without stretching */
-        object-fit: cover;
-        object-position: center top; /* Focus on the top half of the person */
-        display: block;
-        z-index: 5;
-    }
-
-    /* --- Right Column: Text Content --- */
-    .modal-content-col {
-        padding: 50px 40px;
-        text-align: left;
-        display: flex;
-        flex-direction: column;
-
-        /* CHANGED: From 'center' to 'flex-start' so long text doesn't cut off at the top */
-        justify-content: flex-start;
-
-        /* NEW: Enable scrolling */
-        overflow-y: auto;
-    }
-
-    /* --- Custom Scrollbar for the Content Column --- */
-    .modal-content-col::-webkit-scrollbar {
-        width: 6px;
-    }
-    .modal-content-col::-webkit-scrollbar-track {
-        background: transparent;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-    .modal-content-col::-webkit-scrollbar-thumb {
-        background-color: var(
-            --accent3,
-            #e5e7eb
-        ); /* Using your theme's light accent */
-        border-radius: 10px;
-    }
-    .modal-content-col::-webkit-scrollbar-thumb:hover {
-        background-color: var(--accent1, #9ca3af); /* Darken on hover */
-    }
-
-    /* --- Close Button styling update --- */
+    /* --- Close Button (Now perfectly locked) --- */
     .close-modal {
         position: absolute;
         top: 20px;
         right: 20px;
-        background: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
+        background: rgba(255, 255, 255, 0.7);
         backdrop-filter: blur(4px);
         border-radius: 50%;
         border: none;
@@ -138,12 +69,68 @@
         cursor: pointer;
         color: var(--text-headline);
         transition: all 0.2s ease;
-        z-index: 10; /* Ensure it sits above the image column */
+        z-index: 100; /* Stays above everything, always */
     }
 
     .close-modal:hover {
         background-color: var(--accent1);
         color: var(--text-on-accent);
+    }
+
+    /* --- Desktop Grid Layout --- */
+    .modal-grid-layout {
+        display: grid;
+        grid-template-columns: 2fr 3fr;
+        height: 100%;
+        max-height: 90vh;
+        min-height: 500px;
+        background-color: var(--bg-color, #ffffff);
+    }
+
+    .member-modal.no-full-image .modal-grid-layout {
+        grid-template-columns: 1fr;
+    }
+
+    /* --- Left Column: Full Image --- */
+    .modal-image-col {
+        background-color: var(--accent3);
+        position: relative;
+        height: 100%;
+        min-height: 300px;
+    }
+
+    .full-body-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        display: block;
+    }
+
+    /* --- Right Column: Text Content --- */
+    .modal-content-col {
+        padding: 50px 40px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        overflow-y: auto; /* Desktop scrolls here */
+    }
+
+    /* Custom Scrollbar for Desktop */
+    .modal-content-col::-webkit-scrollbar {
+        width: 6px;
+    }
+    .modal-content-col::-webkit-scrollbar-track {
+        background: transparent;
+        margin: 20px 0;
+    }
+    .modal-content-col::-webkit-scrollbar-thumb {
+        background-color: var(--accent3, #e5e7eb);
+        border-radius: 10px;
+    }
+    .modal-content-col::-webkit-scrollbar-thumb:hover {
+        background-color: var(--accent1, #9ca3af);
     }
 
     /* --- Keeping your existing inner styles --- */
@@ -155,7 +142,7 @@
     }
 
     .modal-img-wrapper {
-        width: 80px; /* Slightly smaller headshot now that we have full body */
+        width: 80px;
         height: 80px;
         margin-bottom: 0;
         background-color: var(--accent3);
@@ -165,7 +152,7 @@
         align-items: flex-end;
         overflow: hidden;
         flex-shrink: 0;
-        border: 3px solid #fff; /* Adds definition against the new layout */
+        border: 3px solid var(--bg-color, #ffffff);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
@@ -174,14 +161,12 @@
         height: auto;
         object-fit: contain;
     }
-
     .modal-titles .member-name {
         font-family: font1;
         font-size: 32px;
         color: var(--accent1);
         margin: 0 0 8px 0;
     }
-
     .modal-titles .member-role {
         font-family: font2;
         color: var(--text-paragraph);
@@ -189,7 +174,6 @@
         opacity: 0.8;
         margin: 0;
     }
-
     .member-bio {
         font-family: font2;
         color: var(--text-paragraph);
@@ -202,7 +186,6 @@
     .member-modal[open] {
         animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
     @keyframes modalFadeIn {
         from {
             opacity: 0;
@@ -214,44 +197,89 @@
         }
     }
 
-    /* --- Responsive: Stack on Mobile --- */
+    /* =======================================================
+       MOBILE OVERLAP SCROLLING EFFECT
+       ======================================================= */
+    /* =======================================================
+       MOBILE OVERLAP SCROLLING EFFECT (FIXED)
+       ======================================================= */
     @media (max-width: 850px) {
         .modal-grid-layout {
-            grid-template-columns: 1fr;
-            /* NEW: Image gets 250px, text gets the remaining space */
-            grid-template-rows: 250px minmax(0, 1fr);
-            height: 85vh; /* Slightly smaller on mobile to leave room for browser UI */
-            min-height: auto;
+            display: block;
+            height: 85vh;
+            overflow-y: auto;
+
+            position: static;
         }
 
         .modal-image-col {
-            height: 100%;
-            order: -1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 380px;
+            z-index: 1; /* Stays behind the white text card */
         }
 
         .modal-content-col {
-            padding: 60px 24px 30px;
+            position: relative;
+            z-index: 2; /* Forces the card to slide OVER the image */
+            background-color: var(--bg-color, #ffffff);
+
+            /* THE OVERLAP MAGIC: 
+               The image is 380px tall. We push this card down 340px, 
+               leaving exactly a 40px overlap for the rounded corners. */
+            margin-top: 340px;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+
+            padding: 100px 24px 30px;
+            /* Ensures the white background stretches to the bottom even on short bios */
+            min-height: calc(100% - 200px);
+            box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.15);
         }
 
         .modal-header {
             flex-direction: column;
             text-align: center;
+            /* Pulls headshot up to sit perfectly half on image, half on card */
+            margin-top: -80px;
         }
 
+        .modal-img-wrapper {
+            margin: 0 auto 16px;
+        }
+
+        /* Adjust close button look for mobile so it reads well over photos */
         .close-modal {
             top: 15px;
             right: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            color: #fff;
+            background: rgba(0, 0, 0, 0.4);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
+
         .close-modal:hover {
             background: var(--accent1);
+        }
+
+        /* Logic for when no image is provided */
+        .member-modal.no-full-image .modal-image-col {
+            display: none;
+        }
+        .member-modal.no-full-image .modal-content-col {
+            margin-top: 0;
+            border-radius: 0;
+            box-shadow: none;
+            min-height: 100%;
+        }
+        .member-modal.no-full-image .modal-header {
+            margin-top: 0;
         }
     }
 </style>
 
 <script>
-    // Wrapped in a setup function for safety with View Transitions or delayed loading
     function setupMemberModal() {
         const modal = document.getElementById(
             "member-modal",
@@ -260,7 +288,6 @@
 
         const closeBtn = modal.querySelector(".close-modal");
 
-        // Get references to existing elements
         const modalImg = modal.querySelector("#modal-img") as HTMLImageElement;
         const modalImgContainer = modal.querySelector(
             "#modal-img-container",
@@ -269,7 +296,6 @@
         const modalRole = modal.querySelector("#modal-role");
         const modalBio = modal.querySelector("#modal-bio");
 
-        // Get references to NEW elements
         const modalFullImg = modal.querySelector(
             "#modal-full-image",
         ) as HTMLImageElement;
@@ -282,17 +308,12 @@
         readMoreBtns.forEach((btn) => {
             btn.addEventListener("click", (e) => {
                 const target = e.currentTarget as HTMLButtonElement;
-                // Destructure the new dataset item: fullBodyImg
-                // Note: dataset property names convert kebab-case to camelCase
-                // (data-full-body-img becomes fullBodyImg)
                 const { name, role, img, fullBodyImg, bio } = target.dataset;
 
-                // Populate Text
                 if (modalName) modalName.textContent = name || "";
                 if (modalRole) modalRole.textContent = role || "";
-                if (modalBio) modalBio.innerHTML = bio || ""; // Use innerHTML if bio contains bold/italics
+                if (modalBio) modalBio.innerHTML = bio || "";
 
-                // Populate Headshot (Circular Image)
                 if (
                     img &&
                     img !== "undefined" &&
@@ -306,7 +327,6 @@
                     modalImgContainer.style.display = "none";
                 }
 
-                // Populate NEW Full Body Image
                 if (
                     fullBodyImg &&
                     fullBodyImg !== "undefined" &&
@@ -315,27 +335,27 @@
                 ) {
                     modalFullImg.src = fullBodyImg;
                     modalFullImg.alt = `${name} full body picture`;
-                    // Ensure the grid column is visible
                     modalFullImgContainer.style.display = "block";
-                    // If we have a full image, let's make the grid 2 columns (desktop)
                     modal.classList.remove("no-full-image");
                 } else {
-                    // If no full body image exists, hide that column and make text full width
                     if (modalFullImgContainer)
                         modalFullImgContainer.style.display = "none";
                     modal.classList.add("no-full-image");
                 }
 
+                // Reset scroll position when opening a new member
+                const gridLayout = modal.querySelector(".modal-grid-layout");
+                const contentCol = modal.querySelector(".modal-content-col");
+                if (gridLayout) gridLayout.scrollTop = 0;
+                if (contentCol) contentCol.scrollTop = 0;
+
                 modal.showModal();
-                // Lock body scroll when modal is open
                 document.body.style.overflow = "hidden";
             });
         });
 
-        // Close handlers
         const closeModal = () => {
             modal.close();
-            // Unlock body scroll
             document.body.style.overflow = "";
         };
 

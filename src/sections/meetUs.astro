@@ -17,6 +17,7 @@ const allMembersSorted = [...allMembers].sort(
                 const name = member.data.name;
                 const role = member.data.role;
                 const img = member.data.img;
+                const fullBodyImg = member.data.fullBodyImg;
                 const bio = member.body || "Description coming soon.";
 
                 return (
@@ -33,6 +34,7 @@ const allMembersSorted = [...allMembers].sort(
                             data-name={name}
                             data-role={role}
                             data-img={img}
+                            data-full-body-img={fullBodyImg}
                             data-bio={bio}
                         >
                             Read more ↗

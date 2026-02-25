@@ -1,78 +1,134 @@
 ---
-
+// src/components/MemberModal.astro
+// No Astro-side props needed here, as it's populated via Client-side JS.
 ---
 
 <dialog id="member-modal" class="member-modal">
-    <div class="modal-content">
+    <div class="modal-grid-layout">
+        <div class="modal-image-col" id="modal-full-image-container">
+            <img id="modal-full-image" src="" alt="" class="full-body-img" />
+        </div>
+
+        <div class="modal-content-col">
+            <div class="modal-header">
+                <div
+                    class="image-bg-wrapper modal-img-wrapper"
+                    id="modal-img-container"
+                >
+                    <img id="modal-img" src="" alt="" class="member-img" />
+                </div>
+                <div class="modal-titles">
+                    <h3 id="modal-name" class="member-name"></h3>
+                    <p id="modal-role" class="member-role"></p>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p id="modal-bio" class="member-bio"></p>
+            </div>
+        </div>
+
         <button class="close-modal" aria-label="Close modal">✕</button>
-        <div class="modal-header">
-            <div
-                class="image-bg-wrapper modal-img-wrapper"
-                id="modal-img-container"
-            >
-                <img id="modal-img" src="" alt="" class="member-img" />
-            </div>
-            <div class="modal-titles">
-                <h3 id="modal-name" class="member-name"></h3>
-                <p id="modal-role" class="member-role"></p>
-            </div>
-        </div>
-        <div class="modal-body">
-            <p id="modal-bio" class="member-bio"></p>
-        </div>
     </div>
 </dialog>
 
 <style>
-    /* --- Modal Styles --- */
+    /* --- Modal Container --- */
     .member-modal {
         border: none;
         border-radius: 24px;
         padding: 0;
+        /* Ensure background color matches your theme's paper/card color */
         background-color: var(--bg-color, #ffffff);
-        max-width: 550px;
-        width: 90%;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+
+        /* Increase max-width to accommodate side-by-side layout */
+        max-width: 900px;
+        width: 95%;
+
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        overflow: hidden; /* Ensure image doesn't bleed out corners */
     }
 
     .member-modal::backdrop {
-        background: rgba(246, 244, 238, 0.6);
-        backdrop-filter: blur(4px);
+        background: rgba(246, 244, 238, 0.7);
+        backdrop-filter: blur(6px);
     }
 
-    .modal-content {
-        padding: 40px;
+    /* --- The Grid Layout --- */
+    .modal-grid-layout {
+        display: grid;
+        /* 2/5 width for image, 3/5 for text on desktop */
+        grid-template-columns: 2fr 3fr;
+        position: relative; /* Needed for close button positioning */
+        min-height: 500px; /* Ensures a nice height even with short bio */
+    }
+
+    .member-modal.no-full-image .modal-grid-layout {
+        grid-template-columns: 1fr; /* Switch to single column if no image */
+    }
+
+    /* --- Left Column: Full Image --- */
+    .modal-image-col {
+        background-color: var(--accent3); /* Fallback/placeholder color */
         position: relative;
-        text-align: left;
+        height: 100%;
+        min-height: 300px; /* Ensure visibility */
     }
 
+    .full-body-img {
+        width: 100%;
+        height: 100%;
+        /* Crucial: makes the image cover the area without stretching */
+        object-fit: cover;
+        object-position: center top; /* Focus on the top half of the person */
+        display: block;
+    }
+
+    /* --- Right Column: Text Content --- */
+    .modal-content-col {
+        padding: 50px 40px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Vertically center text if bio is short */
+    }
+
+    /* --- Close Button styling update --- */
     .close-modal {
         position: absolute;
-        top: 24px;
-        right: 24px;
-        background: none;
+        top: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
+        backdrop-filter: blur(4px);
+        border-radius: 50%;
         border: none;
-        font-size: 20px;
+        font-size: 18px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         cursor: pointer;
-        color: var(--text-paragraph);
-        transition: color 0.2s;
-        padding: 8px;
+        color: var(--text-headline);
+        transition: all 0.2s ease;
+        z-index: 10; /* Ensure it sits above the image column */
     }
 
     .close-modal:hover {
-        color: var(--accent1);
+        background-color: var(--accent1);
+        color: var(--text-on-accent);
     }
 
+    /* --- Keeping your existing inner styles --- */
     .modal-header {
         display: flex;
         align-items: center;
         gap: 24px;
-        margin-bottom: 24px;
+        margin-bottom: 32px;
     }
 
     .modal-img-wrapper {
-        width: 100px;
-        height: 100px;
+        width: 80px; /* Slightly smaller headshot now that we have full body */
+        height: 80px;
         margin-bottom: 0;
         background-color: var(--accent3);
         border-radius: 50%;
@@ -81,6 +137,8 @@
         align-items: flex-end;
         overflow: hidden;
         flex-shrink: 0;
+        border: 3px solid #fff; /* Adds definition against the new layout */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
     .member-img {
@@ -91,34 +149,36 @@
 
     .modal-titles .member-name {
         font-family: font1;
-        font-size: 28px;
+        font-size: 32px;
         color: var(--accent1);
-        margin: 0 0 5px 0;
+        margin: 0 0 8px 0;
     }
 
     .modal-titles .member-role {
         font-family: font2;
         color: var(--text-paragraph);
-        font-size: 14px;
+        font-size: 16px;
+        opacity: 0.8;
         margin: 0;
     }
 
     .member-bio {
         font-family: font2;
         color: var(--text-paragraph);
-        line-height: 1.6;
-        font-size: 16px;
+        line-height: 1.7;
+        font-size: 17px;
         margin: 0;
     }
 
+    /* --- Animation --- */
     .member-modal[open] {
-        animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     @keyframes modalFadeIn {
         from {
             opacity: 0;
-            transform: translateY(20px) scale(0.98);
+            transform: translateY(40px) scale(0.95);
         }
         to {
             opacity: 1;
@@ -126,49 +186,86 @@
         }
     }
 
-    @media (max-width: 768px) {
-        .modal-content {
-            padding: 30px 20px;
+    /* --- Responsive: Stack on Mobile --- */
+    @media (max-width: 850px) {
+        .modal-grid-layout {
+            /* Stack vertically */
+            grid-template-columns: 1fr;
+            grid-template-rows: auto auto;
         }
+
+        .modal-image-col {
+            /* Limit height on mobile so it doesn't take the whole screen */
+            height: 300px;
+            order: -1; /* Ensure image is on top */
+        }
+
+        .modal-content-col {
+            padding: 30px 24px;
+        }
+
         .modal-header {
+            /* Optional: center header on mobile */
             flex-direction: column;
             text-align: center;
+        }
+
+        .close-modal {
+            /* On mobile, moving it to the top right of the image feels better */
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+        }
+        .close-modal:hover {
+            background: var(--accent1);
         }
     }
 </style>
 
 <script>
-    // We wrap this in a function to ensure it runs properly when the DOM is ready,
-    // especially helpful if you ever turn on Astro View Transitions.
+    // Wrapped in a setup function for safety with View Transitions or delayed loading
     function setupMemberModal() {
         const modal = document.getElementById(
             "member-modal",
         ) as HTMLDialogElement;
-        const closeBtn = document.querySelector(".close-modal");
-        const modalImg = document.getElementById(
-            "modal-img",
+        if (!modal) return;
+
+        const closeBtn = modal.querySelector(".close-modal");
+
+        // Get references to existing elements
+        const modalImg = modal.querySelector("#modal-img") as HTMLImageElement;
+        const modalImgContainer = modal.querySelector(
+            "#modal-img-container",
+        ) as HTMLElement;
+        const modalName = modal.querySelector("#modal-name");
+        const modalRole = modal.querySelector("#modal-role");
+        const modalBio = modal.querySelector("#modal-bio");
+
+        // Get references to NEW elements
+        const modalFullImg = modal.querySelector(
+            "#modal-full-image",
         ) as HTMLImageElement;
-        const modalImgContainer = document.getElementById(
-            "modal-img-container",
-        );
-        const modalName = document.getElementById("modal-name");
-        const modalRole = document.getElementById("modal-role");
-        const modalBio = document.getElementById("modal-bio");
+        const modalFullImgContainer = modal.querySelector(
+            "#modal-full-image-container",
+        ) as HTMLElement;
 
-        // Find all buttons on the page that should trigger this modal
         const readMoreBtns = document.querySelectorAll(".read-more-btn");
-
-        if (!modal) return; // Exit if modal isn't on the page
 
         readMoreBtns.forEach((btn) => {
             btn.addEventListener("click", (e) => {
                 const target = e.currentTarget as HTMLButtonElement;
-                const { name, role, img, bio } = target.dataset;
+                // Destructure the new dataset item: fullBodyImg
+                // Note: dataset property names convert kebab-case to camelCase
+                // (data-full-body-img becomes fullBodyImg)
+                const { name, role, img, fullBodyImg, bio } = target.dataset;
 
+                // Populate Text
                 if (modalName) modalName.textContent = name || "";
                 if (modalRole) modalRole.textContent = role || "";
-                if (modalBio) modalBio.textContent = bio || "";
+                if (modalBio) modalBio.innerHTML = bio || ""; // Use innerHTML if bio contains bold/italics
 
+                // Populate Headshot (Circular Image)
                 if (
                     img &&
                     img !== "undefined" &&
@@ -182,13 +279,40 @@
                     modalImgContainer.style.display = "none";
                 }
 
+                // Populate NEW Full Body Image
+                if (
+                    fullBodyImg &&
+                    fullBodyImg !== "undefined" &&
+                    modalFullImgContainer &&
+                    modalFullImg
+                ) {
+                    modalFullImg.src = fullBodyImg;
+                    modalFullImg.alt = `${name} full body picture`;
+                    // Ensure the grid column is visible
+                    modalFullImgContainer.style.display = "block";
+                    // If we have a full image, let's make the grid 2 columns (desktop)
+                    modal.classList.remove("no-full-image");
+                } else {
+                    // If no full body image exists, hide that column and make text full width
+                    if (modalFullImgContainer)
+                        modalFullImgContainer.style.display = "none";
+                    modal.classList.add("no-full-image");
+                }
+
                 modal.showModal();
+                // Lock body scroll when modal is open
+                document.body.style.overflow = "hidden";
             });
         });
 
-        closeBtn?.addEventListener("click", () => {
+        // Close handlers
+        const closeModal = () => {
             modal.close();
-        });
+            // Unlock body scroll
+            document.body.style.overflow = "";
+        };
+
+        closeBtn?.addEventListener("click", closeModal);
 
         modal.addEventListener("click", (e) => {
             const dialogDimensions = modal.getBoundingClientRect();
@@ -198,11 +322,10 @@
                 e.clientY < dialogDimensions.top ||
                 e.clientY > dialogDimensions.bottom
             ) {
-                modal.close();
+                closeModal();
             }
         });
     }
 
-    // Run setup on load
     document.addEventListener("DOMContentLoaded", setupMemberModal);
 </script>

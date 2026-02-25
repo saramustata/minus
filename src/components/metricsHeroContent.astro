@@ -48,7 +48,13 @@ const getHeight = (val) => `${(val / maxVal) * 100}%`;
                                     <div class="bar-dot" />
                                 </div>
                             </div>
-                            <span class="label-text">{point.label}</span>
+                            {point.highlight ? (
+                                <span class="label-text highlight">
+                                    {point.label}
+                                </span>
+                            ) : (
+                                <span class="label-text">{point.label}</span>
+                            )}
                         </div>
                     ))
                 }
@@ -255,7 +261,13 @@ const getHeight = (val) => `${(val / maxVal) * 100}%`;
         transition: opacity 0.3s;
     }
 
-    /* --- TOOLTIP STYLES --- */
+    .label-text.highlight {
+        font-weight: 600;
+        opacity: 1;
+        color: white;
+    }
+
+    /* --- TOOLTIPS --- */
     .value-tooltip {
         position: absolute;
         bottom: calc(100% + 15px); /* Position dynamically above the bar */

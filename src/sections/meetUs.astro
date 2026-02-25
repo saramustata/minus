@@ -1,5 +1,7 @@
 ---
 import { getCollection } from "astro:content";
+import MemberModal from "..//components/meetMemberDialog.astro"; // Adjust path as needed
+
 const allMembers = await getCollection("team");
 
 const allMembersSorted = [...allMembers].sort(
@@ -15,6 +17,8 @@ const allMembersSorted = [...allMembers].sort(
                 const name = member.data.name;
                 const role = member.data.role;
                 const img = member.data.img;
+                const fullBodyImg = member.data.fullBodyImg;
+                const bio = member.body || "Description coming soon.";
 
                 return (
                     <div class="member-card">
@@ -25,14 +29,23 @@ const allMembersSorted = [...allMembers].sort(
                         </div>
                         <h3 class="member-name">{name}</h3>
                         <p class="member-role">{role}</p>
-                        <a href="#" class="read-more-btn">
+                        <button
+                            class="read-more-btn"
+                            data-name={name}
+                            data-role={role}
+                            data-img={img}
+                            data-full-body-img={fullBodyImg}
+                            data-bio={bio}
+                        >
                             Read more ↗
-                        </a>
+                        </button>
                     </div>
                 );
             })
         }
     </div>
+
+    <MemberModal />
 </section>
 
 <style>
@@ -88,6 +101,8 @@ const allMembersSorted = [...allMembers].sort(
 
     .read-more-btn {
         display: inline-block;
+        border: none;
+        cursor: pointer;
         padding: 6px 16px;
         background-color: var(--accent1);
         color: var(--text-on-accent);

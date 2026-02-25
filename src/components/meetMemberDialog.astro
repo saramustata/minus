@@ -1,0 +1,208 @@
+---
+
+---
+
+<dialog id="member-modal" class="member-modal">
+    <div class="modal-content">
+        <button class="close-modal" aria-label="Close modal">✕</button>
+        <div class="modal-header">
+            <div
+                class="image-bg-wrapper modal-img-wrapper"
+                id="modal-img-container"
+            >
+                <img id="modal-img" src="" alt="" class="member-img" />
+            </div>
+            <div class="modal-titles">
+                <h3 id="modal-name" class="member-name"></h3>
+                <p id="modal-role" class="member-role"></p>
+            </div>
+        </div>
+        <div class="modal-body">
+            <p id="modal-bio" class="member-bio"></p>
+        </div>
+    </div>
+</dialog>
+
+<style>
+    /* --- Modal Styles --- */
+    .member-modal {
+        border: none;
+        border-radius: 24px;
+        padding: 0;
+        background-color: var(--bg-color, #ffffff);
+        max-width: 550px;
+        width: 90%;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .member-modal::backdrop {
+        background: rgba(246, 244, 238, 0.6);
+        backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+        padding: 40px;
+        position: relative;
+        text-align: left;
+    }
+
+    .close-modal {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: var(--text-paragraph);
+        transition: color 0.2s;
+        padding: 8px;
+    }
+
+    .close-modal:hover {
+        color: var(--accent1);
+    }
+
+    .modal-header {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        margin-bottom: 24px;
+    }
+
+    .modal-img-wrapper {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 0;
+        background-color: var(--accent3);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .member-img {
+        width: 90%;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .modal-titles .member-name {
+        font-family: font1;
+        font-size: 28px;
+        color: var(--accent1);
+        margin: 0 0 5px 0;
+    }
+
+    .modal-titles .member-role {
+        font-family: font2;
+        color: var(--text-paragraph);
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .member-bio {
+        font-family: font2;
+        color: var(--text-paragraph);
+        line-height: 1.6;
+        font-size: 16px;
+        margin: 0;
+    }
+
+    .member-modal[open] {
+        animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.98);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .modal-content {
+            padding: 30px 20px;
+        }
+        .modal-header {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+</style>
+
+<script>
+    // We wrap this in a function to ensure it runs properly when the DOM is ready,
+    // especially helpful if you ever turn on Astro View Transitions.
+    function setupMemberModal() {
+        const modal = document.getElementById(
+            "member-modal",
+        ) as HTMLDialogElement;
+        const closeBtn = document.querySelector(".close-modal");
+        const modalImg = document.getElementById(
+            "modal-img",
+        ) as HTMLImageElement;
+        const modalImgContainer = document.getElementById(
+            "modal-img-container",
+        );
+        const modalName = document.getElementById("modal-name");
+        const modalRole = document.getElementById("modal-role");
+        const modalBio = document.getElementById("modal-bio");
+
+        // Find all buttons on the page that should trigger this modal
+        const readMoreBtns = document.querySelectorAll(".read-more-btn");
+
+        if (!modal) return; // Exit if modal isn't on the page
+
+        readMoreBtns.forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                const target = e.currentTarget as HTMLButtonElement;
+                const { name, role, img, bio } = target.dataset;
+
+                if (modalName) modalName.textContent = name || "";
+                if (modalRole) modalRole.textContent = role || "";
+                if (modalBio) modalBio.textContent = bio || "";
+
+                if (
+                    img &&
+                    img !== "undefined" &&
+                    modalImgContainer &&
+                    modalImg
+                ) {
+                    modalImg.src = img;
+                    modalImg.alt = name || "Team member";
+                    modalImgContainer.style.display = "flex";
+                } else if (modalImgContainer) {
+                    modalImgContainer.style.display = "none";
+                }
+
+                modal.showModal();
+            });
+        });
+
+        closeBtn?.addEventListener("click", () => {
+            modal.close();
+        });
+
+        modal.addEventListener("click", (e) => {
+            const dialogDimensions = modal.getBoundingClientRect();
+            if (
+                e.clientX < dialogDimensions.left ||
+                e.clientX > dialogDimensions.right ||
+                e.clientY < dialogDimensions.top ||
+                e.clientY > dialogDimensions.bottom
+            ) {
+                modal.close();
+            }
+        });
+    }
+
+    // Run setup on load
+    document.addEventListener("DOMContentLoaded", setupMemberModal);
+</script>

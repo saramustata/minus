@@ -1,9 +1,10 @@
 ---
 import { getCollection } from "astro:content";
-import MemberModal from "..//components/meetMemberDialog.astro"; // Adjust path as needed
+import MemberModal from "../components/meetMemberDialog.astro"; // Adjust path as needed
 
 const allMembers = await getCollection("team");
 
+// Sorts members by the 'index' field in your markdown/content files
 const allMembersSorted = [...allMembers].sort(
     (a, b) => a.data.index - b.data.index,
 );
@@ -132,9 +133,17 @@ const allMembersSorted = [...allMembers].sort(
         align-items: center;
     }
 
+    /* --- Featured Top Member Logic --- */
+    /* This targets the first member in your list (index 0) */
+    .member-card:first-child {
+        grid-column: 1 / -1; /* Spans across all 3 columns */
+        justify-self: center; /* Centers the card horizontally */
+        margin-bottom: 40px; /* Extra space before the rest of the grid starts */
+    }
+
     /* Sizing the circles */
     .member-card .image-bg-wrapper {
-        width: 180px; /* Slightly smaller to fit 3 perfectly */
+        width: 180px; 
         height: 180px;
     }
 
@@ -143,12 +152,20 @@ const allMembersSorted = [...allMembers].sort(
         .team-grid {
             grid-template-columns: repeat(2, 1fr); /* 2 columns on tablet */
         }
+        
+        .member-card:first-child {
+            grid-column: 1 / -1; /* Keeps the first member centered across 2 columns */
+        }
     }
 
     @media (max-width: 768px) {
         .team-grid {
             grid-template-columns: 1fr; /* 1 column on mobile */
             gap: 40px;
+        }
+
+        .member-card:first-child {
+            margin-bottom: 0px; /* Reset extra margin for mobile stack */
         }
     }
 </style>

@@ -5,4 +5,4 @@ role: Comunication Coordinator
 fullBodyImg: poze membrii verticale/Calin.JPG
 img: poze de profil membrii/Calin.png
 ---
-Hi, I’m Călin, the Communication Coordinator within MINUS. My role is to turn our vision into growth strategies and ensure that the project’s messages reach our audience clearly and effectively. I focus on measurable results and on building a strong and trustworthy presence among young people. 
+Hi, I’m Călin, the Communication Coordinator within MI-NUS. My role is to turn our vision into growth strategies and ensure that the project’s messages reach our audience clearly and effectively. I focus on measurable results and on building a strong and trustworthy presence among young people. 

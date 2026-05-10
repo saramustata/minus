@@ -3,6 +3,8 @@ const newsItems = [
     { title: "Title", desc: "Description", img: "/src/assets/news1.png" },
     { title: "Title", desc: "Description", img: "/src/assets/news2.png" },
     { title: "Title", desc: "Description", img: "/src/assets/news3.png" },
+    { title: "Title", desc: "Description", img: "/src/assets/news3.png" },
+    { title: "Title", desc: "Description", img: "/src/assets/news3.png" },
 ];
 ---
 
@@ -15,7 +17,7 @@ const newsItems = [
 
     <div class="news-grid">
         {
-            newsItems.map((item) => (
+            newsItems.slice(0, 3).map((item) => (
                 <div class="news-card">
                     <div class="image-wrapper">
                         <div class="placeholder-img" />
@@ -23,7 +25,7 @@ const newsItems = [
                     <div class="card-content">
                         <h3 class="card-title">{item.title}</h3>
                         <p class="card-desc">{item.desc}</p>
-                        <a href="#" class="learn-more-btn">
+                        <a href="/article" class="learn-more-btn">
                             Learn More
                             <span class="arrow">↗</span>
                         </a>

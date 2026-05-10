@@ -24,8 +24,8 @@ const newsItems = allArticles
 
     <div class="news-grid">
         {
-            newsItems.slice(0, 3).map((item) => (
-                <div class="news-card">
+            newsItems.map((item, index) => (
+                <div class={`news-card ${index >= 3 ? 'hidden-card' : ''}`}>
                     <div class="image-wrapper">
                         {item.img ? (
                             <img
@@ -50,9 +50,11 @@ const newsItems = allArticles
         }
     </div>
 
-    <div class="center-btn">
-        <a href="#" class="discover-btn">Discover More</a>
-    </div>
+    {newsItems.length > 3 && (
+        <div class="center-btn" id="discover-more-container">
+            <button id="discover-more-btn" class="discover-btn">Discover More</button>
+        </div>
+    )}
 </section>
 
 <style>
@@ -88,6 +90,10 @@ const newsItems = allArticles
         border-radius: 20px;
         overflow: hidden;
         padding: 20px;
+    }
+
+    .hidden-card {
+        display: none !important;
     }
 
     .image-wrapper {
@@ -156,6 +162,9 @@ const newsItems = allArticles
         text-decoration: none;
         font-family: font2;
         font-weight: bold;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
     }
 
     .discover-btn:hover {
@@ -169,3 +178,17 @@ const newsItems = allArticles
         }
     }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const btn = document.getElementById('discover-more-btn');
+        if (btn) {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.news-card.hidden-card').forEach(card => {
+                    card.classList.remove('hidden-card');
+                });
+                document.getElementById('discover-more-container').style.display = 'none';
+            });
+        }
+    });
+</script>

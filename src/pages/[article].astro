@@ -79,7 +79,13 @@ const formattedDate = dateObj.toLocaleDateString("en-US", {
             <div class="main-column">
                 <article>
                     <header class="article-header">
-                        <span class="article-date">{formattedDate}</span>
+                        {
+                            frontmatter.date && (
+                                <span class="article-date">
+                                    {formattedDate}
+                                </span>
+                            )
+                        }
                         <h1 class="article-title">{frontmatter.title}</h1>
                         <div class="article-hero-image">
                             {

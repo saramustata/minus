@@ -1,22 +1,18 @@
 ---
-title: "Breaking the Boundaries: The Next Step in Sustainable Action"
-description: "A deep dive into how ancient practices are shaping modern solutions."
-date: 2026-05-10
-thumbImage: "/articole/pozaFloarethumbnail.png"
+title: "The beginning of MI-NUS"
+description: "Our project started with just a vision and we turned it into reality."
+date: 2024-04-22
+thumbImage: "/articole/articol1-thumbnail.jpeg"
 galleryFolder: "/articole/articol1"
 url: "breaking-the-boundaries"
 ---
 
 # Change starts with action. 
 
-That’s why we started MI-NUS. A project that encourages people to turn their vision into impact. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-Change starts with action. That’s why we started MI-NUS. A project that encourages people to turn their vision into impact. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+In the spirit of getting things right from the very beginning, we officially launched the MI-NUS project on April 22, 2024, during the Green Week activities at Secondary School No. 97. It was an incredible start. We brought together 60 environmentally conscious students for a pretty remarkable experience: getting to see a robotic dog used in modern agriculture. Marcel Ionescu from Agricloud joined us to introduce this state-of-the-art technology, giving us the chance to interact directly with some truly cutting-edge equipment. 
 
 # Vision for the future
 
-Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula.
+We followed up the first part of our kick-off with a visit to Vectr Farms, where Arnaud Charmetant gave us a very warm welcome. He shared valuable technical insights into the agricultural practices we had first heard about during our April 22 session. Being at the farm gave us a much deeper understanding of how complex agriculture really is and what a farmer’s daily work actually looks like. We got an up-close look at the machinery, including tractors and combine harvesters, and even toured a storage facility filled with that year’s harvest. 
 
-Donec lobortis risus a elit. Etiam aliquet massa et lorem. Mauris venenatis justo.
+Overall, the experience was an inspiring and educational introduction to everything we’re working toward: sustainable agriculture, technological innovation, and our shared environmental responsibility. 

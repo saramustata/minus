@@ -1,10 +1,10 @@
 ---
 title: "Vianu Carbon Footprint"
-description: "How MI-NUS started making a change"
+description: "How MI-NUS started making a change."
 date: 2025-12-16
 thumbImage: "/articole/articol2-thumbnail.jpeg"
 galleryFolder: "/articole/articol2"
-url: "breaking-the-boundaries"
+url: "vianu-carbon-footprint"
 ---
 
 # A project for the future. 

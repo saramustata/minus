@@ -4,7 +4,7 @@ description: "Our project started with just a vision and we turned it into reali
 date: 2024-04-22
 thumbImage: "/articole/articol1-thumbnail.jpeg"
 galleryFolder: "/articole/articol1"
-url: "breaking-the-boundaries"
+url: "the-beginning-of-min-us"
 ---
 
 # Change starts with action. 

@@ -1,5 +1,5 @@
 ---
-title: "MI-NUS at school again"
+title: "Mini MI-NUS"
 description: "Creativity and sustainability all in one"
 date: 2026-04-01
 thumbImage: "/articole/articol4-thumbnail.jpeg"
@@ -9,7 +9,7 @@ url: "mi-nus-at-school-again"
 
 
 One of our main aims when it comes to this project is spreading awareness. With this in mind, we visited two schools in Bucharest to introduce young students to the world of sustainability. We spoke to classes from 5th to 7th grade, tailoring our presentations to spark curiosity and make complex topics accessible.  
-The presentation was all about what MI-NUS was created for.
+The presentation was all about what MI-NUS was created for. We talked about the following:
  
 ### Who We Are 
 Firstly, we walked them through our organization's website, explaining our mission and how students their age can get involved in sustainability efforts. 
